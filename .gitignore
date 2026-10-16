@@ -1,0 +1,9 @@
+# dane zapisywane z panelu (na serwerze) – nie trzymamy ich w repozytorium
+public/data/*.json
+public/data/*.tmp
+public/uploads/*
+!public/uploads/.htaccess
+!public/uploads/.gitkeep
+# oryginalne zdjęcia od klienta (są na Dysku Google)
+_zrodla/
+.DS_Store

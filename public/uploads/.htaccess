@@ -1,0 +1,8 @@
+# W katalogu z wgranymi zdjęciami nie wolno uruchamiać skryptów
+Options -Indexes -ExecCGI
+<FilesMatch "(?i)\.(php|phtml|phar|php\d|pl|py|cgi|sh|htaccess)$">
+Require all denied
+</FilesMatch>
+<IfModule mod_php.c>
+php_flag engine off
+</IfModule>

@@ -1,0 +1,65 @@
+<?php
+/*
+ * Wartości startowe. Używane, dopóki w /data nie ma pliku z danymi z panelu.
+ * Po pierwszym zapisie w panelu obowiązuje plik /data/<nazwa>.json.
+ */
+return [
+    'settings' => [
+        'site_url' => 'https://oskszkolabezpiecznejjazdy.lomza.pl',
+        'name' => 'OSK Artur Żyliński',
+        'tagline' => 'Szkoła Bezpiecznej Jazdy',
+        'owner' => 'Artur Żyliński',
+        'phone' => '792 830 005',
+        'email' => 'azylinski33@gmail.com',
+        'form_email' => '',
+        'street' => 'ul. Dworna 1 lok. 6U',
+        'postal_code' => '18-400',
+        'city' => 'Łomża',
+        'region' => 'podlaskie',
+        'hours' => '', // uzupełnij w panelu: Dane firmy → Godziny
+        'facebook' => '',
+        'google_maps' => '',
+        'legal_name' => '',
+        'nip' => '',
+        'regon' => '',
+        'osk_number' => '',
+        'lat' => '',
+        'lng' => '',
+    ],
+    'prices' => [
+        'course_b' => 3000,
+        'theory_hours' => 30,
+        'practice_hours' => 30,
+        'bonus_hours' => 1,
+        'extra_hour' => 140,
+        'apartment_day' => 280,
+        'apartment_2weeks' => 3400,
+        'installments' => true,
+        'installments_note' => 'Kurs możesz opłacić w ratach. Liczbę i wysokość rat ustalamy indywidualnie przy zapisie.',
+        'extra_items' => [],
+    ],
+    'promo' => [
+        'enabled' => true,
+        'label' => 'Promocja jesienna',
+        'title' => 'Kurs kat. B za 2800 zł',
+        'text' => 'Zapisz się do 16 listopada i zaoszczędź 200 zł. Cały kurs zrealizujesz w ciągu miesiąca.',
+        'price' => 2800,
+        'perk' => 'Szybka realizacja – cały kurs nawet w 1 miesiąc',
+        'start' => '2026-10-16',
+        'end' => '2026-11-16',
+        'popup' => true,
+        'delay' => 10,
+        'repeat_days' => 3,
+        'cta_label' => 'Zapisz się w promocji',
+        'cta_url' => '/kontakt#zapis',
+        'version' => '1',
+    ],
+    'posts' => require __DIR__ . '/seed-posts.php',
+    'messages' => [],
+    'login_attempts' => [],
+    // hasło startowe do panelu – zmień je po pierwszym logowaniu (Panel → Hasło)
+    'auth' => [
+        'hash' => '$2y$10$msxGNiF7e/KcaLIODgxXLuix2z5KzhoRrxeAQyssxqYX0oddyYZQ.',
+        'initial' => true,
+    ],
+];
