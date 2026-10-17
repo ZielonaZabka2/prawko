@@ -3,13 +3,14 @@ $unread = unread_count();
 $nav = [
     'start' => ['Pulpit', 'home'],
     'promocja' => ['Promocja i popup', 'calendar'],
-    'cennik' => ['Cennik', 'wallet'],
+    'kursy' => ['Kursy', 'car'],
+    'cennik' => ['Cennik i usługi', 'wallet'],
     'blog' => ['Blog', 'book'],
     'wiadomosci' => ['Wiadomości', 'mail'],
     'firma' => ['Dane firmy', 'pin'],
     'haslo' => ['Hasło', 'shield'],
 ];
-$active = $current === 'wpis' ? 'blog' : $current;
+$active = ['wpis' => 'blog', 'kurs' => 'kursy'][$current] ?? $current;
 ?><!doctype html>
 <html lang="pl">
 <head>

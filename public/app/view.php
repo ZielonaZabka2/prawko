@@ -53,20 +53,23 @@ function breadcrumbs_html(array $items): string
 }
 
 /** Lista pytań FAQ – ta sama dla treści i dla schemy FAQPage (brak rozjazdu). */
-function faq_items(string $set = 'home'): array
+function faq_items(string $set = 'home', ?array $course = null): array
 {
+    $c = $course ?? main_course();
     $p = prices();
     $promo = promo();
-    $price = zl(course_price());
-    $priceNote = course_discounted()
-        ? ' To cena promocyjna obowiązująca do ' . date_pl($promo['end']) . ' (cena regularna: ' . zl(course_regular_price()) . ').'
+    $price = zl(course_price($c));
+    $priceNote = course_discounted($c)
+        ? ' To cena promocyjna obowiązująca do ' . date_pl($promo['end']) . ' (cena regularna: ' . zl(course_regular_price($c)) . ').'
         : '';
-    $bonus = (int) $p['bonus_hours'] > 0 ? ', ' . (int) $p['bonus_hours'] . ' godzinę jazdy gratis' : '';
+    $bonus = (int) $c['bonus_hours'] > 0 ? ', ' . (int) $c['bonus_hours'] . ' h jazdy gratis' : '';
+    $extra = course_includes($c) ? ', ' . implode(', ', course_includes($c)) : '';
+    $catName = 'kat.' . "\u{00A0}" . $c['category'];
 
     $items = [
         'cena' => [
-            'Ile kosztuje kurs prawa jazdy kat. B w Łomży?',
-            "Kurs prawa jazdy kat. B w OSK Artur Żyliński kosztuje $price.$priceNote W cenie masz {$p['theory_hours']} godzin teorii, {$p['practice_hours']} godzin jazd$bonus oraz materiały szkoleniowe.",
+            "Ile kosztuje kurs prawa jazdy $catName w Łomży?",
+            "Kurs prawa jazdy $catName w OSK Artur Żyliński kosztuje $price.$priceNote W cenie masz {$c['theory_hours']} godzin teorii, {$c['practice_hours']} godzin jazd$bonus$extra.",
         ],
         'raty' => [
             'Czy za kurs można zapłacić w ratach?',
@@ -74,15 +77,15 @@ function faq_items(string $set = 'home'): array
         ],
         'czas' => [
             'Jak szybko można zrobić prawo jazdy?',
-            'Cały kurs da się zrealizować nawet w około miesiąc, jeśli możesz jeździć kilka razy w tygodniu. Godziny jazd ustalamy indywidualnie, także wieczorami. Termin egzaminu państwowego zależy od wolnych miejsc w WORD.',
+            'Cały kurs da się zrealizować nawet w około miesiąc, jeśli możesz jeździć kilka razy w tygodniu. Godziny jazd ustalamy indywidualnie. Termin egzaminu państwowego zależy od wolnych miejsc w WORD.',
         ],
         'start' => [
             'Co trzeba załatwić przed rozpoczęciem kursu?',
             'Potrzebujesz numeru PKK (profil kandydata na kierowcę). Najpierw robisz badanie lekarskie, potem składasz wniosek w wydziale komunikacji. Miejsce na kursie możesz zarezerwować wcześniej – pomożemy przy formalnościach.',
         ],
         'auto' => [
-            'Na jakim samochodzie odbywają się jazdy?',
-            'Jazdy odbywają się nowoczesną Kią Rio IV – zwrotnym, łatwym w prowadzeniu autem z segmentu B.',
+            'Na jakim pojeździe odbywają się jazdy?',
+            $c['vehicle'] ? 'Jazdy na kursie ' . $catName . ' odbywają się pojazdem ' . $c['vehicle'] . '.' : 'Szczegóły pojazdu szkoleniowego podamy przy zapisie.',
         ],
         'doszkalajace' => [
             'Ile kosztuje jazda doszkalająca?',
@@ -94,17 +97,24 @@ function faq_items(string $set = 'home'): array
         ],
         'gdzie' => [
             'Gdzie mieści się biuro szkoły jazdy?',
-            'Biuro OSK Artur Żyliński znajduje się w Łomży przy ' . settings()['street'] . '. Zapisy przyjmujemy też telefonicznie pod numerem ' . settings()['phone'] . '.',
+            'Biuro OSK Artur Żyliński znajduje się w Łomży przy ' . settings()['street'] . '. Zapisy przyjmujemy też telefonicznie pod numerem ' . settings()['phone'] . (settings()['hours'] ? ' (' . str_replace("\n", ', ', settings()['hours']) . ')' : '') . '.',
         ],
     ];
+    if (count(courses()) > 1) {
+        $items['kategorie'] = [
+            'Jakie kategorie prawa jazdy można zrobić w OSK Artur Żyliński?',
+            'Prowadzimy kursy: ' . implode(', ', array_map(fn($x) => 'kat.' . "\u{00A0}" . $x['category'] . ' (' . zl(course_price($x)) . ')', courses())) . '.',
+        ];
+    }
 
     $sets = [
-        'home' => ['cena', 'raty', 'czas', 'start', 'auto', 'doszkalajace', 'nocleg', 'gdzie'],
+        'home' => ['cena', 'kategorie', 'raty', 'czas', 'start', 'auto', 'doszkalajace', 'nocleg', 'gdzie'],
         'kurs' => ['cena', 'raty', 'czas', 'start', 'auto'],
-        'doszkalajace' => ['doszkalajace', 'auto', 'gdzie'],
+        'doszkalajace' => ['doszkalajace', 'gdzie'],
         'noclegi' => ['nocleg', 'czas', 'gdzie'],
     ];
-    return array_map(fn($k) => $items[$k], $sets[$set] ?? $sets['home']);
+    $keys = array_filter($sets[$set] ?? $sets['home'], fn($k) => isset($items[$k]));
+    return array_values(array_map(fn($k) => $items[$k], $keys));
 }
 
 function faq_html(array $items, string $heading = 'Najczęstsze pytania'): string

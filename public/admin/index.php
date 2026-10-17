@@ -59,6 +59,8 @@ if ($method === 'POST') {
 /* ---------- widoki ---------- */
 $views = [
     'start' => 'Pulpit',
+    'kursy' => 'Kursy',
+    'kurs' => 'Edycja kursu',
     'cennik' => 'Cennik',
     'promocja' => 'Promocja i popup',
     'blog' => 'Blog',

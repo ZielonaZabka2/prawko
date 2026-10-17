@@ -11,8 +11,14 @@
     <div class="grid-3">
       <?= field('start', 'Od dnia', $p['start'], ['type' => 'date', 'required' => true]) ?>
       <?= field('end', 'Do dnia (włącznie)', $p['end'], ['type' => 'date', 'required' => true]) ?>
-      <?= field('price', 'Cena promocyjna kursu kat. B', $p['price'], ['type' => 'number', 'min' => 0, 'suffix' => 'zł', 'help' => 'Cena regularna: ' . zl(course_regular_price()) . '. Wpisz 0, jeśli promocja nie dotyczy ceny.']) ?>
+      <div class="field">
+        <label for="f-course">Promocja dotyczy kursu</label>
+        <select id="f-course" name="course">
+          <?php foreach (courses(false) as $c): ?><option value="<?= e($c['slug']) ?>"<?= ($p['course'] ?? '') === $c['slug'] ? ' selected' : '' ?>><?= e($c['name']) ?> (<?= zl((int) $c['price']) ?>)</option><?php endforeach; ?>
+        </select>
+      </div>
     </div>
+    <?= field('price', 'Cena promocyjna', $p['price'], ['type' => 'number', 'min' => 0, 'suffix' => 'zł', 'help' => 'Wpisz 0, jeśli promocja nie dotyczy ceny (np. gratis dodatkowa jazda).']) ?>
     <div class="grid-2">
       <?= field('label', 'Etykieta', $p['label'], ['maxlength' => 40, 'help' => 'Krótko, np. „Promocja jesienna”.']) ?>
       <?= field('title', 'Tytuł', $p['title'], ['maxlength' => 80, 'required' => true, 'help' => 'Np. „Kurs kat. B za 2800 zł”.']) ?>

@@ -35,7 +35,7 @@ $meta = [
             'address' => ['@type' => 'PostalAddress', 'addressLocality' => $s['city'], 'addressCountry' => 'PL'],
             'image' => array_map(fn($g) => image_url($g[0]), array_slice($gallery, 0, 5)),
         ],
-        schema_service('Mieszkanie dla kursantów', '/noclegi-dla-kursantow', 'Wynajem dwupokojowego mieszkania w Łomży na czas kursu prawa jazdy.', schema_offers()[2]),
+        schema_service('Mieszkanie dla kursantów', '/noclegi-dla-kursantow', 'Wynajem dwupokojowego mieszkania w Łomży na czas kursu prawa jazdy.', schema_stay_offer()),
         schema_faq($faq),
     ],
 ];
@@ -116,7 +116,7 @@ $meta = [
       <li>Zadzwoń i podaj, kiedy możesz przyjechać i na jak długo.</li>
       <li>Rezerwujemy mieszkanie i układamy plan jazd na cały pobyt.</li>
     </ol>
-    <p>Sprawdź też <a href="/kurs-prawa-jazdy-kat-b">szczegóły kursu kat. B</a> i <a href="/cennik">pełny cennik</a>.</p>
+    <p>Sprawdź też <a href="<?= e(course_url(main_course())) ?>">szczegóły kursu kat. <?= e(main_course()['category']) ?></a> i <a href="/cennik">pełny cennik</a>.</p>
   </div>
 </section>
 

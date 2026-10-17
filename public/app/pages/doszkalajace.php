@@ -9,7 +9,7 @@ $meta = [
     'path' => '/jazdy-doszkalajace',
     'breadcrumbs' => $crumbs,
     'schema' => [
-        schema_service('Jazdy doszkalające', '/jazdy-doszkalajace', 'Dodatkowe godziny jazdy z instruktorem w Łomży – przed egzaminem lub dla kierowców po przerwie.', schema_offers()[1]),
+        schema_service('Jazdy doszkalające', '/jazdy-doszkalajace', 'Dodatkowe godziny jazdy z instruktorem w Łomży – przed egzaminem lub dla kierowców po przerwie.', schema_extra_offer()),
         schema_faq($faq),
     ],
 ];

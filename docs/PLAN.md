@@ -106,17 +106,25 @@ Cel strony: telefon lub zapis na kurs kat. B. Drugi cel: jazdy doszkalające i w
 
 ## 8. Do potwierdzenia z klientem
 
-- [ ] godziny otwarcia biura
+- [x] godziny otwarcia biura – na start pon–pt 8:00–18:00 (zmiana w panelu)
 - [ ] adres strony na Facebooku (do `sameAs` i stopki)
 - [ ] pełna nazwa firmy, NIP, REGON, numer w rejestrze OSK (do regulaminu i polityki prywatności)
 - [ ] czy mieszkanie jest tylko dla kursantów, czy dla wszystkich
 - [ ] ile osób zmieści mieszkanie, adres/okolica (zdjęcia pokazują nowe osiedle)
 - [ ] warunki rat (ile rat, czy bez odsetek)
 - [ ] czy egzamin wewnętrzny i jazda na egzamin („wynajem auta na egzamin”) są w ofercie
-- [ ] zdjęcia samochodu to wizualizacje: przydałoby się 2–3 prawdziwe zdjęcia auta
+- [x] zdjęcia samochodu: zostają wizualizacje (prawdziwych zdjęć auta brak)
 - [ ] zdjęcie instruktora (bardzo mocno buduje zaufanie, E-E-A-T)
 - [ ] założenie / uzupełnienie wizytówki Google (Google Business Profile)
 
-## 9. Wdrożenie
+## 9. Rozbudowa o kolejne kategorie
+
+Kursy są danymi, nie kodem: **panel → Kursy → Dodaj kurs**. Każda kategoria ma własną stronę `/kurs-prawa-jazdy-kat-x`, cenę, godziny, pojazd, opis (z automatycznymi znacznikami ceny), wpis w cenniku, FAQ, mapie strony i danych dla Google. Przy więcej niż jednym kursie w menu pojawia się „Kursy” (`/kursy`). Promocję przypisuje się do wybranego kursu.
+
+## 10. Design
+
+Patrz `docs/DESIGN.md` (3 warianty strony głównej, zasady animacji).
+
+## 11. Wdrożenie
 
 Patrz `docs/WDROZENIE.md`.

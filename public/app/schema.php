@@ -25,10 +25,10 @@ function schema_business(): array
         'url' => site_url(),
         'logo' => site_url('icon-512.png'),
         'image' => [site_url('assets/img/og-image.jpg'), image_url('biuro-dworna-lomza')],
-        'description' => 'Ośrodek szkolenia kierowców w Łomży. Kurs prawa jazdy kat. B, jazdy doszkalające oraz mieszkanie dla kursantów spoza miasta.',
+        'description' => 'Ośrodek szkolenia kierowców w Łomży. Kursy prawa jazdy (kat. ' . implode(', ', array_column(courses(), 'category')) . '), jazdy doszkalające oraz mieszkanie dla kursantów spoza miasta.',
         'telephone' => '+48 ' . $s['phone'],
         'email' => $s['email'],
-        'priceRange' => zl((int) $p['extra_hour']) . ' – ' . zl(course_regular_price()),
+        'priceRange' => zl((int) $p['extra_hour']) . ' – ' . zl(max(array_map('course_regular_price', courses()) ?: [0])),
         'currenciesAccepted' => 'PLN',
         'address' => [
             '@type' => 'PostalAddress',
@@ -45,6 +45,9 @@ function schema_business(): array
     if ($s['lat'] !== '' && $s['lng'] !== '') {
         $biz['geo'] = ['@type' => 'GeoCoordinates', 'latitude' => (float) $s['lat'], 'longitude' => (float) $s['lng']];
     }
+    if (!empty($s['hours_schema'])) {
+        $biz['openingHours'] = array_values(array_filter(array_map('trim', explode(',', $s['hours_schema']))));
+    }
     if ($sameAs) {
         $biz['sameAs'] = $sameAs;
     }
@@ -54,53 +57,54 @@ function schema_business(): array
     return $biz;
 }
 
-function schema_offers(): array
+function schema_course_offer(array $c): array
 {
-    $p = prices();
-    $promo = promo();
-    $course = [
+    $offer = [
         '@type' => 'Offer',
-        'name' => 'Kurs prawa jazdy kat. B',
-        'url' => site_url('kurs-prawa-jazdy-kat-b'),
-        'price' => course_price(),
+        'name' => $c['name'],
+        'url' => site_url(ltrim(course_url($c), '/')),
+        'price' => course_price($c),
         'priceCurrency' => 'PLN',
         'availability' => 'https://schema.org/InStock',
         'itemOffered' => [
             '@type' => 'Service',
-            'name' => 'Kurs prawa jazdy kategorii B',
-            'description' => "{$p['theory_hours']} godzin zajęć teoretycznych, {$p['practice_hours']} godzin jazd" . ((int) $p['bonus_hours'] ? ", {$p['bonus_hours']} godzina jazdy gratis" : '') . ', materiały szkoleniowe.',
+            'name' => 'Kurs prawa jazdy kategorii ' . $c['category'],
+            'description' => trim("{$c['theory_hours']} godzin zajęć teoretycznych, {$c['practice_hours']} godzin jazd"
+                . ((int) $c['bonus_hours'] ? ", {$c['bonus_hours']} h jazdy gratis" : '')
+                . (course_includes($c) ? ', ' . implode(', ', course_includes($c)) : '') . '.'),
         ],
     ];
-    if (course_discounted()) {
-        $course['priceValidUntil'] = $promo['end'];
+    if (course_discounted($c)) {
+        $offer['priceValidUntil'] = promo()['end'];
     }
+    return $offer;
+}
+
+function schema_extra_offer(): array
+{
     return [
-        $course,
-        [
-            '@type' => 'Offer',
-            'name' => 'Jazdy doszkalające',
-            'url' => site_url('jazdy-doszkalajace'),
-            'priceCurrency' => 'PLN',
-            'priceSpecification' => [
-                '@type' => 'UnitPriceSpecification',
-                'price' => (int) $p['extra_hour'],
-                'priceCurrency' => 'PLN',
-                'unitText' => 'godzina',
-            ],
-        ],
-        [
-            '@type' => 'Offer',
-            'name' => 'Mieszkanie dla kursantów',
-            'url' => site_url('noclegi-dla-kursantow'),
-            'priceCurrency' => 'PLN',
-            'priceSpecification' => [
-                '@type' => 'UnitPriceSpecification',
-                'price' => (int) $p['apartment_day'],
-                'priceCurrency' => 'PLN',
-                'unitText' => 'doba',
-            ],
-        ],
+        '@type' => 'Offer',
+        'name' => 'Jazdy doszkalające',
+        'url' => site_url('jazdy-doszkalajace'),
+        'priceCurrency' => 'PLN',
+        'priceSpecification' => ['@type' => 'UnitPriceSpecification', 'price' => (int) prices()['extra_hour'], 'priceCurrency' => 'PLN', 'unitText' => 'godzina'],
     ];
+}
+
+function schema_stay_offer(): array
+{
+    return [
+        '@type' => 'Offer',
+        'name' => 'Mieszkanie dla kursantów',
+        'url' => site_url('noclegi-dla-kursantow'),
+        'priceCurrency' => 'PLN',
+        'priceSpecification' => ['@type' => 'UnitPriceSpecification', 'price' => (int) prices()['apartment_day'], 'priceCurrency' => 'PLN', 'unitText' => 'doba'],
+    ];
+}
+
+function schema_offers(): array
+{
+    return array_merge(array_map('schema_course_offer', courses()), [schema_extra_offer(), schema_stay_offer()]);
 }
 
 function schema_website(): array
@@ -124,7 +128,7 @@ function schema_person(): array
         'name' => $s['owner'],
         'jobTitle' => 'Instruktor nauki jazdy, właściciel OSK',
         'worksFor' => ['@id' => schema_id('osk')],
-        'knowsAbout' => ['nauka jazdy', 'prawo jazdy kategorii B', 'egzamin na prawo jazdy', 'bezpieczna jazda'],
+        'knowsAbout' => ['nauka jazdy', 'prawo jazdy', 'egzamin na prawo jazdy', 'bezpieczna jazda'],
     ];
 }
 

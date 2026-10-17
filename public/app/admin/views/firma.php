@@ -16,7 +16,21 @@
       <?= field('postal_code', 'Kod pocztowy', $s['postal_code']) ?>
       <?= field('city', 'Miasto', $s['city']) ?>
     </div>
-    <?= field('hours', 'Godziny otwarcia / kontaktu', $s['hours'], ['type' => 'textarea', 'rows' => 3, 'help' => 'Każda linia osobno, np. „Pon–Pt: 9:00–17:00”.']) ?>
+    <div class="grid-2">
+      <?= field('hours', 'Godziny otwarcia (widoczne na stronie)', $s['hours'], ['type' => 'textarea', 'rows' => 3, 'help' => 'Każda linia osobno, np. „Sobota: 9:00–13:00”.']) ?>
+      <?= field('hours_schema', 'Godziny dla Google', $s['hours_schema'], ['help' => 'Format: <code>Mo-Fr 08:00-18:00, Sa 09:00-13:00</code> (Mo Tu We Th Fr Sa Su).']) ?>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Wygląd strony głównej</legend>
+    <div class="variants">
+      <?php foreach (['a' => ['Asfalt', 'Ciemny, cena na pierwszym planie, auto na drodze'], 'b' => ['Trasa', 'Jasny, redakcyjny, kroki jako trasa z mapą'], 'c' => ['Pas startowy', 'Pełnoekranowe zdjęcie, przewijany pasek, karty kursów']] as $k => [$label, $desc]): ?>
+        <label class="variant">
+          <input type="radio" name="home_variant" value="<?= $k ?>"<?= ($s['home_variant'] ?? 'a') === $k ? ' checked' : '' ?>>
+          <span><strong><?= strtoupper($k) ?> · <?= e($label) ?></strong><small><?= e($desc) ?></small><a href="/?wariant=<?= $k ?>" target="_blank" rel="noopener">Podgląd</a></span>
+        </label>
+      <?php endforeach; ?>
+    </div>
   </fieldset>
   <fieldset>
     <legend>Internet</legend>

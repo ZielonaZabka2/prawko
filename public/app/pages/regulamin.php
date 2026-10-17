@@ -44,7 +44,7 @@ $ids = array_filter([
     <ol>
       <li>Regulamin określa zasady świadczenia usług szkoleniowych przez <?= e($company) ?>, <?= e(full_address()) ?><?= $ids ? ', ' . e(implode(', ', $ids)) : '' ?> (dalej: „Ośrodek”).</li>
       <?php if ($s['osk_number']): ?><li>Ośrodek jest wpisany do rejestru przedsiębiorców prowadzących ośrodek szkolenia kierowców pod numerem <?= e($s['osk_number']) ?>.</li><?php endif; ?>
-      <li>Ośrodek prowadzi szkolenia kandydatów na kierowców kategorii B, jazdy doszkalające oraz wynajmuje kursantom mieszkanie na czas szkolenia.</li>
+      <li>Ośrodek prowadzi szkolenia kandydatów na kierowców w kategoriach podanych na stronie, jazdy doszkalające oraz wynajmuje kursantom mieszkanie na czas szkolenia.</li>
       <li>Kontakt z Ośrodkiem: tel. <?= e($s['phone']) ?>, e-mail <?= e($s['email']) ?>, osobiście w biurze przy <?= e($s['street']) ?> w Łomży.</li>
     </ol>
 
@@ -57,7 +57,7 @@ $ids = array_filter([
 
     <h2 id="szkolenie">§ 3. Przebieg szkolenia</h2>
     <ol>
-      <li>Kurs kat. B obejmuje <?= (int) $p['theory_hours'] ?> godzin zajęć teoretycznych i <?= (int) $p['practice_hours'] ?> godzin zajęć praktycznych, zgodnie z obowiązującymi przepisami dotyczącymi szkolenia kierowców<?= (int) $p['bonus_hours'] ? ', oraz dodatkowo ' . (int) $p['bonus_hours'] . ' godzinę jazdy gratis' : '' ?>.</li>
+      <li>Zakres i liczba godzin szkolenia dla danej kategorii są zgodne z obowiązującymi przepisami dotyczącymi szkolenia kierowców i podane w opisie kursu na stronie (np. <?php $mc = main_course(); ?>kurs kat. <?= e($mc['category']) ?>: <?= (int) $mc['theory_hours'] ?> godzin zajęć teoretycznych i <?= (int) $mc['practice_hours'] ?> godzin zajęć praktycznych<?= (int) $mc['bonus_hours'] ? ' oraz dodatkowo ' . (int) $mc['bonus_hours'] . ' h jazdy gratis' : '' ?>).</li>
       <li>Zajęcia praktyczne odbywają się samochodem przystosowanym do nauki jazdy, w terminach uzgodnionych między kursantem a instruktorem.</li>
       <li>Szkolenie kończy się egzaminem wewnętrznym (teoretycznym i praktycznym). Po jego zaliczeniu Ośrodek potwierdza ukończenie szkolenia w profilu kandydata na kierowcę.</li>
       <li>Kursant zgłasza się na jazdy trzeźwy, wypoczęty, z dokumentem tożsamości i w obuwiu umożliwiającym bezpieczne prowadzenie pojazdu. Instruktor może odmówić przeprowadzenia jazdy, jeśli stan kursanta zagraża bezpieczeństwu; taka jazda jest traktowana jak odwołana w terminie krótszym niż wskazany w § 5.</li>
@@ -92,7 +92,7 @@ $ids = array_filter([
       <li>Cena promocyjna obowiązuje przy zawarciu umowy szkoleniowej w okresie trwania promocji, niezależnie od terminu zakończenia kursu.</li>
       <li>Promocje nie łączą się ze sobą, chyba że ich warunki stanowią inaczej.</li>
       <?php if (promo_active($promo)): ?>
-      <li><strong>Aktualna promocja – „<?= e($promo['label']) ?>”:</strong> <?= e($promo['title']) ?> (cena regularna: <?= zl(course_regular_price()) ?>). Okres obowiązywania: od <?= e(date_short($promo['start'])) ?> do <?= e(date_short($promo['end'])) ?>. <?= e($promo['text']) ?></li>
+      <li><strong>Aktualna promocja – „<?= e($promo['label']) ?>”:</strong> <?= e($promo['title']) ?> <?php $pc = find_course(promo_course_slug()); if ($pc): ?>– dotyczy kursu: <?= e($pc['name']) ?>, cena regularna: <?= zl(course_regular_price($pc)) ?><?php endif; ?>. Okres obowiązywania: od <?= e(date_short($promo['start'])) ?> do <?= e(date_short($promo['end'])) ?>. <?= e($promo['text']) ?></li>
       <?php endif; ?>
       <li>Deklarowany w promocjach czas realizacji kursu (np. „do 1 miesiąca”) dotyczy szkolenia w Ośrodku i zakłada dostępność kursanta na jazdy kilka razy w tygodniu oraz posiadanie numeru PKK w dniu rozpoczęcia kursu. Nie obejmuje terminów egzaminu państwowego, które wyznacza WORD.</li>
     </ol>

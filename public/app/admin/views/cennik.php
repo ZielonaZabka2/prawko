@@ -1,16 +1,11 @@
 <?php $p = prices(); $extra = $p['extra_items'] ?? []; while (count($extra) < 4) { $extra[] = ['name' => '', 'note' => '', 'price' => '', 'unit' => '']; } ?>
-<h1>Cennik</h1>
-<p class="muted">Ceny trafiają na stronę główną, do cennika, FAQ i do danych dla Google. Wpisuj same liczby (bez „zł”).</p>
+<h1>Cennik i usługi</h1>
+<p class="muted">Ceny usług dodatkowych (kursy edytujesz w zakładce Kursy). Trafiają do cennika, FAQ i do danych dla Google. Wpisuj same liczby (bez „zł”).</p>
 <form method="post" action="?p=cennik" class="panel">
   <?= csrf_field() ?>
   <fieldset>
-    <legend>Kurs prawa jazdy kat. B</legend>
-    <div class="grid-3">
-      <?= field('course_b', 'Cena regularna kursu', $p['course_b'], ['type' => 'number', 'min' => 1, 'suffix' => 'zł', 'required' => true, 'help' => 'Cenę promocyjną ustawiasz w zakładce <a href="?p=promocja">Promocja</a>.']) ?>
-      <?= field('theory_hours', 'Godziny teorii', $p['theory_hours'], ['type' => 'number', 'min' => 0, 'suffix' => 'h']) ?>
-      <?= field('practice_hours', 'Godziny jazd', $p['practice_hours'], ['type' => 'number', 'min' => 0, 'suffix' => 'h']) ?>
-      <?= field('bonus_hours', 'Godziny jazdy gratis', $p['bonus_hours'], ['type' => 'number', 'min' => 0, 'suffix' => 'h', 'help' => 'Wpisz 0, żeby ukryć „+1 h gratis”.']) ?>
-    </div>
+    <legend>Płatność za kursy</legend>
+    <p class="help">Ceny i godziny poszczególnych kursów ustawiasz w zakładce <a href="?p=kursy">Kursy</a>.</p>
     <?= field('installments', 'Możliwość płatności w ratach', $p['installments'], ['type' => 'checkbox']) ?>
     <?= field('installments_note', 'Opis rat (widoczny w cenniku i FAQ)', $p['installments_note'], ['type' => 'textarea', 'rows' => 2, 'maxlength' => 400]) ?>
   </fieldset>

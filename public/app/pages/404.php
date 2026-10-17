@@ -12,7 +12,7 @@ $meta = [
     <p class="lead">Adres mógł się zmienić albo zawierać literówkę. Wróć na właściwą drogę:</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="/">Strona główna</a>
-      <a class="btn btn-ghost" href="/kurs-prawa-jazdy-kat-b">Kurs kat. B</a>
+      <a class="btn btn-ghost" href="/kursy">Kursy</a>
       <a class="btn btn-ghost" href="/kontakt">Kontakt</a>
     </div>
   </div>

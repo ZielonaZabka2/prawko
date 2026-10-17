@@ -7,6 +7,84 @@
     set: function (k, v) { try { window.localStorage.setItem(k, v); } catch (e) { /* tryb prywatny */ } }
   };
 
+  document.documentElement.classList.add('motion-ready');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- wejścia przy przewijaniu ----------
+     Treść jest widoczna bez JS – ukrywamy ją tylko, gdy ten skrypt działa (klasa .js). */
+  var revealEls = document.querySelectorAll('[data-reveal], [data-reveal-group]');
+  document.querySelectorAll('[data-reveal-group]').forEach(function (g) {
+    Array.prototype.forEach.call(g.children, function (ch, i) { ch.style.setProperty('--i', Math.min(i, 8)); });
+  });
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('is-in'); });
+  }
+
+  /* ---------- postęp przewijania: trasa (wariant B) i auto na drodze (wariant C) ---------- */
+  var route = document.querySelector('[data-route]');
+  var drive = document.querySelector('[data-drive]');
+  var road = drive && drive.querySelector('.drive-road');
+  var ticking = false;
+  var progress = function (el, startAt, endAt) {
+    var r = el.getBoundingClientRect();
+    var vh = window.innerHeight;
+    var p = (vh * startAt - r.top) / (r.height + vh * (startAt - endAt));
+    return Math.max(0, Math.min(1, p));
+  };
+  var onScroll = function () {
+    ticking = false;
+    document.documentElement.classList.toggle('is-scrolled', window.scrollY > 8);
+    if (reduceMotion) { return; }
+    if (route) { route.style.setProperty('--route-p', progress(route, 0.75, 0.45).toFixed(3)); }
+    if (road) {
+      drive.style.setProperty('--drive-w', road.clientWidth + 'px');
+      var dp = progress(drive, 0.85, 0.35);
+      drive.style.setProperty('--drive-p', dp.toFixed(3));
+      var stops = drive.querySelectorAll('.drive-steps > li');
+      Array.prototype.forEach.call(stops, function (li, i) { li.classList.toggle('passed', dp >= i / Math.max(1, stops.length - 1) - 0.02); });
+    }
+  };
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; window.requestAnimationFrame(onScroll); }
+  }, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  onScroll();
+
+  /* ---------- liczniki (wariant C): krótko, z wyhamowaniem ---------- */
+  var counters = document.querySelectorAll('[data-count]');
+  if (counters.length && 'IntersectionObserver' in window && !reduceMotion) {
+    var cio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) { return; }
+        cio.unobserve(en.target);
+        var el = en.target, to = parseInt(el.dataset.count, 10) || 0, t0 = null, dur = 900;
+        var step = function (t) {
+          if (!t0) { t0 = t; }
+          var k = Math.min(1, (t - t0) / dur);
+          el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3)));
+          if (k < 1) { window.requestAnimationFrame(step); }
+        };
+        window.requestAnimationFrame(step);
+      });
+    }, { threshold: 0.6 });
+    counters.forEach(function (c) { cio.observe(c); });
+  }
+
+  /* ---------- droga w hero: przerywana linia jedzie tylko, gdy ją widać ---------- */
+  var movingRoad = document.querySelector('.road-moving');
+  if (movingRoad && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      movingRoad.style.setProperty('--lane-state', entries[0].isIntersecting ? 'running' : 'paused');
+    }).observe(movingRoad);
+  }
+
   /* ---------- menu mobilne ---------- */
   var toggle = document.querySelector('.nav-toggle');
   if (toggle) {

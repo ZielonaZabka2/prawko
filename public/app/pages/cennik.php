@@ -4,17 +4,20 @@ $p = prices();
 $promo = promo();
 $crumbs = [['Cennik', '/cennik']];
 $meta = [
-    'title' => 'Cennik – ile kosztuje prawo jazdy kat. B w Łomży?',
-    'description' => 'Aktualny cennik OSK Artur Żyliński w Łomży: kurs kat. B ' . zl(course_price()) . ', jazdy doszkalające ' . zl((int) $p['extra_hour']) . '/h, mieszkanie dla kursantów od ' . zl((int) $p['apartment_day']) . '/doba. Raty.',
+    'title' => 'Cennik – ile kosztuje prawo jazdy w Łomży? | OSK Żyliński',
+    'description' => 'Aktualny cennik OSK Artur Żyliński w Łomży: kurs kat. ' . main_course()['category'] . ' ' . zl(course_price()) . ', jazdy doszkalające ' . zl((int) $p['extra_hour']) . '/h, mieszkanie dla kursantów od ' . zl((int) $p['apartment_day']) . '/doba. Raty.',
     'path' => '/cennik',
     'breadcrumbs' => $crumbs,
 ];
-$rows = [
-    ['Kurs prawa jazdy kat. B', (int) $p['theory_hours'] . ' h teorii, ' . (int) $p['practice_hours'] . ' h jazd' . ((int) $p['bonus_hours'] ? ', +' . (int) $p['bonus_hours'] . ' h gratis' : '') . ', materiały', course_price(), course_discounted() ? course_regular_price() : null, '/kurs-prawa-jazdy-kat-b'],
+$rows = [];
+foreach (courses() as $c) {
+    $rows[] = [$c['name'], (int) $c['theory_hours'] . ' h teorii, ' . (int) $c['practice_hours'] . ' h jazd' . ((int) $c['bonus_hours'] ? ', +' . (int) $c['bonus_hours'] . ' h gratis' : '') . (course_includes($c) ? ', ' . implode(', ', course_includes($c)) : ''), course_price($c), course_discounted($c) ? course_regular_price($c) : null, course_url($c)];
+}
+$rows = array_merge($rows, [
     ['Jazda doszkalająca', '60 minut z instruktorem', (int) $p['extra_hour'], null, '/jazdy-doszkalajace', 'h'],
     ['Mieszkanie dla kursantów', 'doba, 2 pokoje', (int) $p['apartment_day'], null, '/noclegi-dla-kursantow'],
     ['Mieszkanie dla kursantów', 'pobyt 2-tygodniowy', (int) $p['apartment_2weeks'], null, '/noclegi-dla-kursantow'],
-];
+]);
 foreach ($p['extra_items'] ?? [] as $item) {
     if (!empty($item['name'])) {
         $rows[] = [$item['name'], $item['note'] ?? '', (int) ($item['price'] ?? 0), null, null, $item['unit'] ?? ''];
@@ -25,7 +28,7 @@ foreach ($p['extra_items'] ?? [] as $item) {
   <div class="wrap">
     <?= breadcrumbs_html($crumbs) ?>
     <h1>Cennik</h1>
-    <p class="lead narrow-text">Ile kosztuje prawo jazdy kat. B w Łomży? U nas kurs kosztuje <strong><?= zl(course_price()) ?></strong><?= course_discounted() ? ' w promocji do ' . e(date_pl($promo['end'])) : '' ?>. Poniżej wszystkie ceny w jednym miejscu, aktualne na <?= e(date_pl(date('Y-m-d'))) ?>.</p>
+    <p class="lead narrow-text">Ile kosztuje prawo jazdy kat. <?= e(main_course()['category']) ?> w Łomży? U nas kurs kosztuje <strong><?= zl(course_price()) ?></strong><?= course_discounted() ? ' w promocji do ' . e(date_pl($promo['end'])) : '' ?>. Poniżej wszystkie ceny w jednym miejscu, aktualne na <?= e(date_pl(date('Y-m-d'))) ?>.</p>
   </div>
 </section>
 
@@ -50,7 +53,7 @@ foreach ($p['extra_items'] ?? [] as $item) {
       </table>
     </div>
 
-    <?php if (course_discounted()): ?>
+    <?php if (promo_active($promo)): ?>
       <div class="note note-promo">
         <?= icon('calendar') ?>
         <p><strong><?= e($promo['label']) ?>:</strong> <?= e($promo['text']) ?> Promocja obowiązuje od <?= e(date_short($promo['start'])) ?> do <?= e(date_short($promo['end'])) ?>. <a href="/regulamin#promocje">Warunki</a></p>

@@ -87,24 +87,102 @@ function promo_active(?array $p = null): bool
     return true;
 }
 
-/** Cena kursu kat. B, jaką klient faktycznie zapłaci dziś. */
-function course_price(): int
+/* ---------- kursy (kategorie prawa jazdy) ---------- */
+
+/** Lista kursów posortowana wg kolejności z panelu. */
+function courses(bool $onlyActive = true): array
 {
+    $list = load_data('courses');
+    if ($onlyActive) {
+        $list = array_values(array_filter($list, fn($c) => !empty($c['active'])));
+    }
+    usort($list, fn($a, $b) => ((int) ($a['order'] ?? 99)) <=> ((int) ($b['order'] ?? 99)));
+    return array_map('course_normalize', $list);
+}
+
+function course_normalize(array $c): array
+{
+    return $c + [
+        'slug' => '', 'category' => '', 'name' => '', 'short' => '', 'lead' => '', 'price' => 0,
+        'theory_hours' => 0, 'practice_hours' => 0, 'bonus_hours' => 0, 'vehicle' => '',
+        'includes' => '', 'content' => '', 'meta_title' => '', 'meta_description' => '',
+        'active' => true, 'featured' => false, 'order' => 99,
+    ];
+}
+
+function find_course(string $slug, bool $onlyActive = true): ?array
+{
+    foreach (courses($onlyActive) as $c) {
+        if ($c['slug'] === $slug) {
+            return $c;
+        }
+    }
+    return null;
+}
+
+/** Kurs „główny” – wyróżniony w panelu albo pierwszy aktywny. */
+function main_course(): array
+{
+    $all = courses();
+    foreach ($all as $c) {
+        if (!empty($c['featured'])) {
+            return $c;
+        }
+    }
+    return $all[0] ?? course_normalize(['name' => 'Kurs prawa jazdy', 'slug' => 'kat-b', 'category' => 'B']);
+}
+
+function course_url(array $c): string
+{
+    return '/kurs-prawa-jazdy-' . $c['slug'];
+}
+
+/** Elementy „w cenie” (jeden na linię w panelu). */
+function course_includes(array $c): array
+{
+    return array_values(array_filter(array_map('trim', explode("\n", (string) $c['includes']))));
+}
+
+function promo_course_slug(): string
+{
+    return (string) (promo()['course'] ?? '');
+}
+
+/** Cena, jaką klient faktycznie zapłaci dziś (z promocją, jeśli dotyczy tego kursu). */
+function course_price(?array $c = null): int
+{
+    $c ??= main_course();
     $p = promo();
-    if (promo_active($p) && (int) ($p['price'] ?? 0) > 0) {
+    if (promo_active($p) && (int) ($p['price'] ?? 0) > 0 && promo_course_slug() === $c['slug']) {
         return (int) $p['price'];
     }
-    return (int) prices()['course_b'];
+    return (int) $c['price'];
 }
 
-function course_regular_price(): int
+function course_regular_price(?array $c = null): int
 {
-    return (int) prices()['course_b'];
+    $c ??= main_course();
+    return (int) $c['price'];
 }
 
-function course_discounted(): bool
+function course_discounted(?array $c = null): bool
 {
-    return course_price() < course_regular_price();
+    $c ??= main_course();
+    return course_price($c) < course_regular_price($c);
+}
+
+/** Podstawia {cena}, {teoria} itd. w opisie kursu z panelu. */
+function course_tokens(string $text, array $c): string
+{
+    return strtr($text, [
+        '{cena}' => zl(course_price($c)),
+        '{cena_regularna}' => zl(course_regular_price($c)),
+        '{teoria}' => (string) (int) $c['theory_hours'],
+        '{praktyka}' => (string) (int) $c['practice_hours'],
+        '{gratis}' => (string) (int) $c['bonus_hours'],
+        '{auto}' => (string) $c['vehicle'],
+        '{kategoria}' => (string) $c['category'],
+    ]);
 }
 
 /* ---------- blog ---------- */

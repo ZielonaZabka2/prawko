@@ -14,8 +14,8 @@ $postsAll = posts(false);
     <span class="status status-<?= e($st) ?>"><?= e($stLabel) ?></span>
     <span class="card-v"><?= e($p['title']) ?></span>
   </a>
-  <a class="card" href="?p=cennik">
-    <span class="card-k">Cena kursu kat. B na stronie</span>
+  <a class="card" href="?p=kursy">
+    <span class="card-k">Cena kursu kat. <?= e(main_course()['category']) ?> na stronie</span>
     <span class="card-v big"><?= zl(course_price()) ?></span>
     <?php if (course_discounted()): ?><span class="muted">regularnie <?= zl(course_regular_price()) ?></span><?php endif; ?>
   </a>

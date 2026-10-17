@@ -17,7 +17,7 @@ $route = trim($path, '/');
 
 $pages = [
     '' => 'home',
-    'kurs-prawa-jazdy-kat-b' => 'kurs',
+    'kursy' => 'kursy',
     'jazdy-doszkalajace' => 'doszkalajace',
     'noclegi-dla-kursantow' => 'noclegi',
     'cennik' => 'cennik',
@@ -40,6 +40,13 @@ switch (true) {
     case isset($pages[$route]):
         render($pages[$route]);
         exit;
+    case preg_match('~^kurs-prawa-jazdy-([a-z0-9-]+)$~', $route, $m) === 1:
+        $course = find_course($m[1], !is_admin());
+        if ($course) {
+            render('kurs', ['course' => $course]);
+            exit;
+        }
+        break;
     case preg_match('~^blog/([a-z0-9-]+)$~', $route, $m) === 1:
         $post = find_post($m[1], !is_admin()); // administrator widzi też szkice
         if ($post) {

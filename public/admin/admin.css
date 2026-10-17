@@ -145,3 +145,10 @@ legend { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-siz
   .extra-head { display: none; }
   .table th:nth-child(2), .table td:nth-child(2) { display: none; }
 }
+.variants { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.variant { display: flex; gap: 10px; align-items: flex-start; border: 1.5px solid var(--line); border-radius: var(--r); padding: 14px; cursor: pointer; }
+.variant:has(input:checked) { border-color: var(--orange); background: #fff7f1; }
+.variant input { accent-color: var(--orange); margin-top: 4px; }
+.variant span { display: grid; gap: 4px; }
+.variant small { color: var(--muted); }
+@media (max-width: 900px) { .variants { grid-template-columns: 1fr; } }
