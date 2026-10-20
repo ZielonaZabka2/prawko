@@ -75,7 +75,7 @@ $ticker = array_filter([
 <section class="section" aria-labelledby="dlaczego-c">
   <div class="wrap split">
     <figure class="photo-tilt" data-reveal="clip">
-      <?= img('biuro-dworna-lomza', 'Biuro Szkoły Bezpiecznej Jazdy przy ul. Dworna 1 w Łomży', '(min-width: 960px) 560px, 100vw') ?>
+      <?= img('flota-pod-biurem', 'Dwa samochody szkoleniowe Kia Rio przed biurem szkoły jazdy przy ul. Dworna 1', '(min-width: 960px) 560px, 100vw') ?>
       <figcaption><?= icon('pin', 'icon icon-sm') ?> <?= e($s['street']) ?>, Łomża</figcaption>
     </figure>
     <div>

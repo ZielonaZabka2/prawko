@@ -84,8 +84,8 @@ $reasons = require __DIR__ . '/reasons-data.php';
 </section>
 
 <section class="photo-duo" aria-label="Biuro i samochód szkoleniowy">
-  <figure data-reveal="clip"><?= img('biuro-dworna-lomza', 'Wejście do biura szkoły jazdy przy ul. Dworna 1', '(min-width: 760px) 50vw, 100vw') ?><figcaption>Biuro · <?= e($s['street']) ?></figcaption></figure>
-  <figure data-reveal="clip"><?= img('kia-rio-tyl', 'Samochód szkoleniowy z oznaczeniem L', '(min-width: 760px) 50vw, 100vw') ?><figcaption>Auto szkoleniowe · <?= e($c['vehicle'] ?: 'kat. ' . $c['category']) ?></figcaption></figure>
+  <figure data-reveal="clip"><?= img('biuro-szyld', 'Biuro Szkoły Bezpiecznej Jazdy przy ul. Dworna 1 w Łomży', '(min-width: 760px) 50vw, 100vw') ?><figcaption>Biuro · <?= e($s['street']) ?></figcaption></figure>
+  <figure data-reveal="clip"><?= img('flota-pod-biurem', 'Dwa samochody szkoleniowe Kia Rio przed biurem', '(min-width: 760px) 50vw, 100vw') ?><figcaption>Dwa auta szkoleniowe · <?= e($c['vehicle'] ?: 'kat. ' . $c['category']) ?></figcaption></figure>
 </section>
 
 <?php partial('home/included', compact('c', 'cat')); ?>

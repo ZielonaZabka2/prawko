@@ -54,7 +54,7 @@ if ($meta['breadcrumbs']) {
 <body class="<?= e(trim('page-' . $meta['nav'] . ' ' . $meta['body_class'])) ?>">
 <a class="skip" href="#main">Przejdź do treści</a>
 
-<?php if ($promoOn): ?>
+<?php if ($promoOn && !empty($promo['bar'])): ?>
 <div class="promo-bar">
   <div class="wrap promo-bar-in">
     <span class="promo-bar-tag"><?= e($promo['label']) ?></span>
@@ -152,6 +152,9 @@ if ($meta['breadcrumbs']) {
   <form method="dialog" class="promo-close-form">
     <button class="promo-close" value="close" aria-label="Zamknij"><?= icon('close') ?></button>
   </form>
+  <?php if (!empty($promo['image']) && image_variants($promo['image'])): ?>
+    <div class="promo-media"><?= img($promo['image'], '', '440px', ['default_w' => 480]) ?></div>
+  <?php endif; ?>
   <div class="promo-dialog-in" tabindex="-1" autofocus>
     <p class="promo-tag"><?= e($promo['label']) ?></p>
     <h2 id="promo-title"><?= e($promo['title']) ?></h2>

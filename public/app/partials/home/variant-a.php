@@ -83,17 +83,19 @@ $reasons = require __DIR__ . '/reasons-data.php';
     <div class="car-block">
       <div class="car-copy" data-reveal>
         <p class="eyebrow">Samochód szkoleniowy</p>
-        <h2 id="auto">Jeździsz <?= e($c['vehicle'] ?: 'nowoczesnym autem') ?></h2>
-        <p>Nowoczesne, zwrotne auto miejskie z dobrą widocznością dookoła. Łatwo wyczuć jego wymiary, więc szybciej opanujesz parkowanie i manewry na placu.</p>
+        <h2 id="auto">Dwa auta szkoleniowe – <?= e($c['vehicle'] ?: 'nowoczesne auta') ?></h2>
+        <p>Szkolimy na dwóch Kiach Rio: białej i granatowej. To zwrotne auta miejskie z dobrą widocznością dookoła. Łatwo wyczuć ich wymiary, więc szybciej opanujesz parkowanie i manewry na placu. Dwa auta to też łatwiej o wolny termin jazdy.</p>
         <ul class="ticks ticks-dark">
           <li><?= icon('check') ?> podwójne pedały i dodatkowe lusterka dla instruktora</li>
           <li><?= icon('check') ?> auto z segmentu B, typowe dla egzaminów na <?= e($cat) ?></li>
           <li><?= icon('check') ?> regularnie serwisowane</li>
         </ul>
       </div>
-      <figure class="car-photo" data-reveal="right">
-        <?= img('kia-rio-tyl', 'Samochód do nauki jazdy z oznaczeniem L', '(min-width: 960px) 640px, 100vw') ?>
-      </figure>
+      <div class="car-gallery" data-reveal-group>
+        <figure class="car-main"><?= img('flota-pod-biurem', 'Dwa samochody szkoleniowe Kia Rio przed biurem szkoły jazdy', '(min-width: 960px) 640px, 100vw') ?></figure>
+        <figure><?= img('kia-biala-przod', 'Biała Kia Rio do nauki jazdy', '(min-width: 960px) 320px, 50vw') ?></figure>
+        <figure><?= img('kia-granatowa-przod', 'Granatowa Kia Rio do nauki jazdy', '(min-width: 960px) 320px, 50vw') ?></figure>
+      </div>
     </div>
   </div>
 </section>

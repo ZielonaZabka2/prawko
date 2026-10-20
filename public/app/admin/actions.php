@@ -41,6 +41,9 @@ switch ($page) {
         $p['start'] = post_date('start');
         $p['end'] = post_date('end');
         $p['popup'] = post_bool('popup');
+        $p['bar'] = post_bool('bar');
+        $img = (string) ($_POST['image'] ?? '');
+        $p['image'] = $img === '' || image_variants($img) ? $img : '';
         $p['delay'] = post_int('delay', 0, 120);
         $p['repeat_days'] = post_int('repeat_days', 0, 60);
         $p['cta_label'] = post_str('cta_label', 40) ?: 'Zapisz się';
@@ -52,7 +55,7 @@ switch ($page) {
         }
         // nowa treść promocji = popup pokaże się ponownie także tym, którzy go zamknęli
         $changed = false;
-        foreach (['title', 'text', 'price', 'start', 'end', 'course'] as $k) {
+        foreach (['title', 'text', 'price', 'start', 'end', 'course', 'image'] as $k) {
             $changed = $changed || (string) $old[$k] !== (string) $p[$k];
         }
         if ($changed || post_bool('reset_popup')) {

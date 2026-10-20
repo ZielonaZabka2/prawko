@@ -116,6 +116,8 @@ Cel strony: telefon lub zapis na kurs kat. B. Drugi cel: jazdy doszkalające i w
 - [x] zdjęcia samochodu: zostają wizualizacje (prawdziwych zdjęć auta brak)
 - [ ] zdjęcie instruktora (bardzo mocno buduje zaufanie, E-E-A-T)
 - [ ] założenie / uzupełnienie wizytówki Google (Google Business Profile)
+- [ ] kurs 14-dniowy (3400 zł): czy obejmuje też +1 h gratis, czy w cenie jest nocleg (3400 zł to tyle samo co mieszkanie na 2 tygodnie), jak wygląda plan dni
+- [ ] promocja 2800 zł (20.10–20.11.2026): czy dotyczy też kursu 14-dniowego
 
 ## 9. Rozbudowa o kolejne kategorie
 

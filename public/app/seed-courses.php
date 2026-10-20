@@ -62,4 +62,42 @@ Do rozpoczęcia jazd potrzebny jest numer PKK, czyli profil kandydata na kierowc
 Dokładną instrukcję znajdziesz w artykule [jak wyrobić PKK w Łomży](/blog/profil-kandydata-na-kierowce-pkk-lomza). Miejsce na kursie możesz zarezerwować, zanim urząd nada numer.
 MD,
     ],
+    [
+        'id' => 'kat-b-14-dni',
+        'slug' => 'kat-b-14-dni',
+        'category' => 'B',
+        'name' => 'Kurs kat. B w 14 dni',
+        'short' => 'Kurs intensywny',
+        'lead' => 'Cały kurs prawa jazdy w dwa tygodnie – dla osób, które chcą zrobić prawo jazdy szybko.',
+        'price' => 3400,
+        'theory_hours' => 30,
+        'practice_hours' => 30,
+        'bonus_hours' => 0,
+        'vehicle' => 'Kia Rio IV',
+        'includes' => "materiały szkoleniowe\negzamin wewnętrzny\nplan zajęć na 14 dni",
+        'meta_title' => 'Kurs prawa jazdy w 14 dni – Łomża | OSK Żyliński',
+        'meta_description' => '',
+        'active' => true,
+        'featured' => false,
+        'order' => 2,
+        'content' => <<<'MD'
+## Ile kosztuje kurs prawa jazdy w 14 dni?
+
+Intensywny kurs kat. B trwa 14 dni i kosztuje {cena}. Obejmuje pełny zakres szkolenia: {teoria} godzin teorii, {praktyka} godzin jazd, materiały szkoleniowe i egzamin wewnętrzny.
+
+## Dla kogo jest kurs 14-dniowy?
+
+Dla osób, które mają czas na codzienne zajęcia i chcą zamknąć kurs w dwa tygodnie: studentów w czasie wakacji, osób na urlopie, pracujących za granicą, którzy przyjeżdżają do Polski na krótko.
+
+## Jak wygląda plan zajęć?
+
+Teoria i jazdy odbywają się codziennie, według planu ustalonego indywidualnie przy zapisie. Jazdy prowadzimy samochodem {auto} – na placu manewrowym, w mieście, poza miastem i na trasach egzaminacyjnych. Kurs kończy się egzaminem wewnętrznym.
+
+## Co trzeba mieć przed startem?
+
+Numer PKK musi być gotowy w dniu rozpoczęcia kursu – inaczej nie zmieścimy się w 14 dniach. Jak go wyrobić, opisujemy w artykule [PKK w Łomży](/blog/profil-kandydata-na-kierowce-pkk-lomza).
+
+Przyjeżdżasz spoza Łomży? Na czas kursu możesz zamieszkać w naszym [mieszkaniu dla kursantów](/noclegi-dla-kursantow).
+MD,
+    ],
 ];

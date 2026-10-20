@@ -13,11 +13,12 @@ $variant = in_array($_GET['wariant'] ?? '', ['a', 'b', 'c'], true) ? $_GET['wari
 if (!in_array($variant, ['a', 'b', 'c'], true)) {
     $variant = 'a';
 }
-$cats = array_column(courses(), 'category');
+$cats = array_values(array_unique(array_column(courses(), 'category')));
 $meta = [
     'title' => count($cats) > 1
         ? 'Nauka jazdy Łomża – kursy prawa jazdy kat. ' . implode(', ', $cats) . ' | OSK Żyliński'
-        : 'Nauka jazdy Łomża – kurs prawa jazdy ' . $cat . ' | OSK Żyliński',
+        : (count(courses()) > 1 ? 'Nauka jazdy Łomża – kursy prawa jazdy ' . $cat . ' | OSK Żyliński'
+        : 'Nauka jazdy Łomża – kurs prawa jazdy ' . $cat . ' | OSK Żyliński'),
     'description' => 'Szkoła jazdy w Łomży: kurs prawa jazdy ' . $cat . ' za ' . zl(course_price($c)) . ', jazdy doszkalające ' . zl((int) $p['extra_hour']) . '/h, raty i mieszkanie dla kursantów. ul. Dworna 1. Tel. ' . $s['phone'] . '.',
     'path' => '/',
     'schema' => [schema_faq($faq), schema_person()],

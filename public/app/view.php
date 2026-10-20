@@ -102,8 +102,8 @@ function faq_items(string $set = 'home', ?array $course = null): array
     ];
     if (count(courses()) > 1) {
         $items['kategorie'] = [
-            'Jakie kategorie prawa jazdy można zrobić w OSK Artur Żyliński?',
-            'Prowadzimy kursy: ' . implode(', ', array_map(fn($x) => 'kat.' . "\u{00A0}" . $x['category'] . ' (' . zl(course_price($x)) . ')', courses())) . '.',
+            'Jakie kursy prawa jazdy prowadzi OSK Artur Żyliński?',
+            'Prowadzimy kursy: ' . implode(', ', array_map(fn($x) => $x['name'] . ' (' . zl(course_price($x)) . ')', courses())) . '.',
         ];
     }
 

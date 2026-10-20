@@ -25,7 +25,7 @@ function schema_business(): array
         'url' => site_url(),
         'logo' => site_url('icon-512.png'),
         'image' => [site_url('assets/img/og-image.jpg'), image_url('biuro-dworna-lomza')],
-        'description' => 'Ośrodek szkolenia kierowców w Łomży. Kursy prawa jazdy (kat. ' . implode(', ', array_column(courses(), 'category')) . '), jazdy doszkalające oraz mieszkanie dla kursantów spoza miasta.',
+        'description' => 'Ośrodek szkolenia kierowców w Łomży. Kursy prawa jazdy (kat. ' . implode(', ', array_unique(array_column(courses(), 'category'))) . '), jazdy doszkalające oraz mieszkanie dla kursantów spoza miasta.',
         'telephone' => '+48 ' . $s['phone'],
         'email' => $s['email'],
         'priceRange' => zl((int) $p['extra_hour']) . ' – ' . zl(max(array_map('course_regular_price', courses()) ?: [0])),

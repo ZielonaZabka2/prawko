@@ -2,7 +2,7 @@
 $p = prices();
 $list = courses();
 $crumbs = [['Kursy', '/kursy']];
-$cats = implode(', ', array_column($list, 'category'));
+$cats = implode(', ', array_unique(array_column($list, 'category')));
 $meta = [
     'title' => 'Kursy prawa jazdy w Łomży – kat. ' . $cats . ' | OSK Żyliński',
     'description' => 'Kursy prawa jazdy w Łomży (kat. ' . $cats . '), jazdy doszkalające i mieszkanie dla kursantów. Aktualne ceny, raty, zapisy: ' . settings()['phone'] . '.',

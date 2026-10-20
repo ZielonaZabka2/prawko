@@ -29,6 +29,15 @@
   <fieldset>
     <legend>Wyskakujące okienko (popup)</legend>
     <?= field('popup', '<strong>Pokazuj popup</strong> gdy promocja jest aktywna', $p['popup'], ['type' => 'checkbox']) ?>
+    <?= field('bar', 'Pokazuj też pasek z promocją na górze strony', $p['bar'] ?? false, ['type' => 'checkbox']) ?>
+    <div class="field">
+      <label for="f-image">Zdjęcie w popupie</label>
+      <select id="f-image" name="image">
+        <?php foreach (['' => 'bez zdjęcia', 'flota-pod-biurem' => 'Oba auta pod biurem', 'kia-biala-przod' => 'Biała Kia', 'kia-granatowa-przod' => 'Granatowa Kia', 'biuro-szyld' => 'Biuro z szyldem', 'mieszkanie-salon' => 'Mieszkanie – salon'] as $k => $label): ?>
+          <option value="<?= e($k) ?>"<?= ($p['image'] ?? '') === $k ? ' selected' : '' ?>><?= e($label) ?></option>
+        <?php endforeach; ?>
+      </select>
+    </div>
     <div class="grid-3">
       <?= field('delay', 'Pokaż po', $p['delay'], ['type' => 'number', 'min' => 0, 'max' => 120, 'suffix' => 'sekundach']) ?>
       <?= field('repeat_days', 'Pokaż ponownie po', $p['repeat_days'], ['type' => 'number', 'min' => 0, 'max' => 60, 'suffix' => 'dniach', 'help' => 'Po zamknięciu okienka ta sama osoba nie zobaczy go przez tyle dni. 0 = tylko raz.']) ?>
