@@ -37,4 +37,5 @@ Co **jest**:
 - Ruch związany z przewijaniem (trasa B, auto C) liczony jest raz na klatkę (`requestAnimationFrame`).
 - `prefers-reduced-motion`: bez ruchu, treść od razu widoczna.
 - Bez JavaScriptu treść jest widoczna. Ukrywanie przed animacją włącza się tylko, gdy skrypt działa, a po 2,5 s jest bezpiecznik.
-- Zero bibliotek: cały skrypt strony to ok. 9 KB bez kompresji.
+- Zero bibliotek: cały skrypt strony to ok. 11 KB bez kompresji.
+- Pełne zasady: skill `.claude/skills/emil-kowalski-motion`, wyniki audytu: `docs/AUDYT.md`.

@@ -65,8 +65,8 @@ return [
     'content' => [
         'hero_lead' => '',
         'reasons' => [
-            ['Indywidualne podejście', 'Tempo nauki dopasowane do Ciebie. Jeśli coś nie wychodzi, wracamy do tego, aż zacznie.'],
-            ['Cierpliwy, doświadczony instruktor', 'Spokojna atmosfera w aucie. Stres to najgorszy nauczyciel, więc go nie dokładamy.'],
+            ['Tempo dopasowane do kursanta', 'Jeśli parkowanie albo rondo sprawia problem, wracamy do tego na kolejnych jazdach, zanim pójdziemy dalej.'],
+            ['Instruktor, który tłumaczy', 'Każdy błąd omawiamy po zatrzymaniu auta: co się stało i jak zrobić to następnym razem. Bez podnoszenia głosu.'],
             ['Elastyczne terminy jazd', 'Rano, po szkole, po pracy. Plan jazd układamy razem, a nie z góry narzuconego grafiku.'],
             ['Szybka realizacja kursu', 'Masz czas jeździć częściej? Cały kurs można zamknąć nawet w około miesiąc, a w trybie Express w 14 dni.'],
             ['Pomoc na każdym etapie', 'Od wniosku o PKK po termin w WORD. Podpowiemy, co i kiedy załatwić.'],
@@ -82,6 +82,7 @@ return [
         ],
     ],
     'faq' => [],
+    'indexnow' => [],
     'reviews' => [],
     'courses' => require __DIR__ . '/seed-courses.php',
     'posts' => require __DIR__ . '/seed-posts.php',

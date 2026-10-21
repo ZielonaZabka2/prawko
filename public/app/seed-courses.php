@@ -16,6 +16,7 @@ return [
         'practice_hours' => 30,
         'bonus_hours' => 1,
         'vehicle' => 'Kia Rio IV',
+        'duration' => 'ok. 1 miesiąc lub dłużej – w Twoim tempie',
         'includes' => "materiały szkoleniowe\negzamin wewnętrzny",
         'meta_title' => '',
         'meta_description' => '',
@@ -33,7 +34,7 @@ Poza kursem opłacasz badanie lekarskie (u lekarza uprawnionego do badań kierow
 
 Teoria to {teoria} godzin zajęć z instruktorem: przepisy ruchu drogowego, znaki, pierwszeństwo, zachowanie w trudnych sytuacjach i podstawy pierwszej pomocy.
 
-Nie uczymy wyłącznie „pod test”. Tłumaczymy, dlaczego przepis jest taki, a nie inny – wtedy łatwiej go zapamiętać i zastosować na skrzyżowaniu, a nie tylko na ekranie egzaminacyjnym.
+Przepisy omawiamy na przykładach z łomżyńskich ulic i skrzyżowań. Łatwiej je wtedy zapamiętać i zastosować w czasie jazdy, a pytania testowe przestają być abstrakcyjne.
 
 ## Jak wyglądają jazdy?
 
@@ -74,9 +75,10 @@ MD,
         'practice_hours' => 30,
         'bonus_hours' => 0,
         'vehicle' => 'Kia Rio IV',
+        'duration' => '14 dni, zajęcia codziennie',
         'includes' => "materiały szkoleniowe\negzamin wewnętrzny\nplan zajęć na 14 dni",
         'meta_title' => 'Kurs prawa jazdy Express w 14 dni – Łomża | OSK Żyliński',
-        'meta_description' => '',
+        'meta_description' => 'Kurs prawa jazdy kat. B Express w Łomży: cały kurs w 14 dni, 30 h teorii i 30 h jazd za 3400 zł. Codzienne zajęcia, bez noclegu. Zapisy: 792 830 005.',
         'active' => true,
         'featured' => false,
         'order' => 2,

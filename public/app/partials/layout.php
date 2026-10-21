@@ -49,6 +49,8 @@ if ($meta['breadcrumbs']) {
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/barlow-condensed-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/barlow-condensed-latin-ext-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/barlow-latin-ext-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <script>(function(d){d.classList.add('js');setTimeout(function(){if(!d.classList.contains('motion-ready'))d.classList.remove('js')},2500)})(document.documentElement)</script>
 <link rel="stylesheet" href="<?= asset('assets/css/style.css') ?>">
 <?= schema_script($schema) ?>

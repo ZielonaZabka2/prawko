@@ -155,6 +155,7 @@ switch ($page) {
             $posts[] = $post;
         }
         save_data('posts', $posts) ? flash($post['published'] ? 'Wpis zapisany i opublikowany.' : 'Wpis zapisany jako szkic (niewidoczny na stronie).') : flash('Nie udało się zapisać.', 'error');
+        if ($post['published']) { indexnow_ping(['/blog/' . $post['slug'], '/blog', '/sitemap.xml']); }
         redirect('?p=wpis&id=' . urlencode($post['id']));
 
     case 'kurs':
@@ -196,6 +197,7 @@ switch ($page) {
         $c['practice_hours'] = post_int('practice_hours', 0, 300);
         $c['bonus_hours'] = post_int('bonus_hours', 0, 50);
         $c['vehicle'] = post_str('vehicle', 80);
+        $c['duration'] = post_str('duration', 80);
         $c['includes'] = post_str('includes', 600);
         $c['content'] = post_str('content', 60000);
         $c['meta_title'] = post_str('meta_title', 70);
@@ -215,6 +217,7 @@ switch ($page) {
             save_data('promo', $promo);
         }
         save_data('courses', $all) ? flash('Kurs zapisany.') : flash('Nie udało się zapisać.', 'error');
+        if ($c['active']) { indexnow_ping([course_url($c), '/kursy', '/cennik']); }
         redirect('?p=kurs&id=' . urlencode($c['id']));
 
     case 'tresci':

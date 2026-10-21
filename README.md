@@ -10,6 +10,8 @@ Dokumenty:
 - [docs/PLAN.md](docs/PLAN.md): plan, struktura strony, SEO, design, rzeczy do potwierdzenia z klientem
 - [docs/WDROZENIE.md](docs/WDROZENIE.md): jak wgrać stronę na LH.pl
 - [docs/DESIGN.md](docs/DESIGN.md): 3 warianty strony głównej i zasady animacji
+- [docs/AUDYT.md](docs/AUDYT.md): audyt SEO, AI-slop i animacji (Lighthouse przed/po)
+- `.claude/skills/`: skille projektu – `emil-kowalski-motion` (animacje) i `anti-slop`
 
 Podgląd lokalny:
 

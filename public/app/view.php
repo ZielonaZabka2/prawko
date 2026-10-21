@@ -128,7 +128,7 @@ function faq_items(string $set = 'home', ?array $course = null): array
 function faq_html(array $items, string $heading = 'Najczęstsze pytania'): string
 {
     $out = '<section class="section faq" id="faq" aria-labelledby="faq-h"><div class="wrap narrow">';
-    $out .= '<p class="eyebrow">FAQ</p><h2 id="faq-h">' . e($heading) . '</h2><div class="faq-list">';
+    $out .= '<h2 id="faq-h">' . e($heading) . '</h2><div class="faq-list">';
     foreach ($items as $i => [$q, $a]) {
         $out .= '<details' . ($i === 0 ? ' open' : '') . '><summary><h3>' . e($q) . '</h3>' . icon('chevron', 'icon faq-ico') . '</summary><p>' . e($a) . '</p></details>';
     }

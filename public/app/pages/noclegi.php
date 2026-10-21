@@ -103,7 +103,7 @@ $meta = [
 <dialog class="lightbox" id="lightbox" aria-label="Podgląd zdjęcia">
   <button class="lb-btn lb-close" type="button" data-lb="close" aria-label="Zamknij"><?= icon('close') ?></button>
   <button class="lb-btn lb-prev" type="button" data-lb="prev" aria-label="Poprzednie zdjęcie"><?= icon('chevron-left') ?></button>
-  <figure><img src="" alt=""><figcaption></figcaption></figure>
+  <figure><img alt=""><figcaption></figcaption></figure>
   <button class="lb-btn lb-next" type="button" data-lb="next" aria-label="Następne zdjęcie"><?= icon('chevron') ?></button>
 </dialog>
 

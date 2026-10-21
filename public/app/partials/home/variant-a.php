@@ -8,11 +8,11 @@ $reasons = require __DIR__ . '/reasons-data.php';
     <div class="hero-copy">
       <p class="kicker anim-load" style="--d:0"><span class="lplate" aria-hidden="true">L</span> Ośrodek szkolenia kierowców w Łomży</p>
       <h1 class="mask-lines">
-        <span class="ml"><span style="--d:1">Nauka jazdy</span></span>
-        <span class="ml"><span style="--d:2">w Łomży</span></span>
-        <span class="ml h1-sub"><span style="--d:3">Kurs prawa jazdy <?= e($cat) ?></span></span>
+        <span class="ml"><span class="w" style="--w:1">Nauka</span> <span class="w" style="--w:2">jazdy</span></span>
+        <span class="ml"><span class="w" style="--w:3">w</span> <span class="w" style="--w:4">Łomży</span></span>
+        <span class="ml h1-sub"><span class="w" style="--w:5">Kurs</span> <span class="w" style="--w:6">prawa</span> <span class="w" style="--w:7">jazdy</span> <span class="w" style="--w:8"><?= e($cat) ?></span></span>
       </h1>
-      <p class="lead anim-load" style="--d:4"><?= e(load_data('content')['hero_lead'] ?: 'Przygotujemy Cię do egzaminu w WORD i do jazdy, która zaczyna się dzień po nim. Spokojnie, bez krzyku, w terminach dopasowanych do Twojego planu dnia.') ?></p>
+      <p class="lead anim-load" style="--d:4"><?= e(load_data('content')['hero_lead'] ?: (int) $c['theory_hours'] . ' h teorii, ' . (int) $c['practice_hours'] . ' h jazd' . ((int) $c['bonus_hours'] ? ' i ' . (int) $c['bonus_hours'] . ' h gratis' : '') . '. Terminy jazd ustalasz z instruktorem, zapisy telefonicznie albo w biurze przy ul. Dwornej.') ?></p>
       <div class="hero-actions anim-load" style="--d:5">
         <a class="btn btn-primary btn-lg" href="/kontakt#zapis">Zapisz się na kurs <?= icon('arrow') ?></a>
         <a class="btn btn-ghost btn-lg" href="<?= e(phone_href()) ?>"><?= icon('phone') ?> <?= e($s['phone']) ?></a>
@@ -21,7 +21,7 @@ $reasons = require __DIR__ . '/reasons-data.php';
     <div class="anim-load anim-rise" style="--d:3"><?php partial('home/price-card', compact('c', 'promo', 'cat')); ?></div>
   </div>
   <figure class="hero-car hero-car-drive">
-    <?= img('kia-rio-szkoleniowa', 'Samochód szkoleniowy ' . ($c['vehicle'] ?: '') . ' w barwach OSK Artur Żyliński', '(min-width: 1200px) 1140px, 100vw', ['eager' => true, 'default_w' => 1024]) ?>
+    <span class="car-clip"><?= img('kia-rio-szkoleniowa', 'Samochód szkoleniowy ' . ($c['vehicle'] ?: '') . ' w barwach OSK Artur Żyliński', '(min-width: 1200px) 1140px, 100vw', ['eager' => true, 'default_w' => 1024]) ?></span>
     <span class="road road-moving" aria-hidden="true"></span>
   </figure>
 </section>
@@ -51,7 +51,6 @@ $reasons = require __DIR__ . '/reasons-data.php';
 
 <section class="section section-alt" aria-labelledby="kroki">
   <div class="wrap">
-    <p class="eyebrow" data-reveal>Przebieg</p>
     <h2 id="kroki" data-reveal>Jak zdobyć prawo jazdy? 6 kroków</h2>
     <p class="bluf narrow-text" data-reveal>Od pierwszego telefonu do egzaminu w WORD Łomża prowadzimy Cię przez sześć etapów. Formalności po stronie szkoły bierzemy na siebie, Ty skupiasz się na nauce.</p>
     <ol class="steps" data-reveal-group>
@@ -64,7 +63,7 @@ $reasons = require __DIR__ . '/reasons-data.php';
   <div class="wrap split">
     <div>
       <p class="eyebrow" data-reveal>Dlaczego ta szkoła</p>
-      <h2 id="dlaczego" data-reveal>Uczymy bezpiecznej jazdy, nie tylko zdawania egzaminu</h2>
+      <h2 id="dlaczego" data-reveal>Jak uczymy w Szkole Bezpiecznej Jazdy</h2>
       <ul class="reasons" data-reveal-group>
         <?php foreach ($reasons as [$t, $d]): ?><li><h3><?= e($t) ?></h3><p><?= e($d) ?></p></li><?php endforeach; ?>
       </ul>
@@ -82,9 +81,8 @@ $reasons = require __DIR__ . '/reasons-data.php';
   <div class="wrap">
     <div class="car-block">
       <div class="car-copy" data-reveal>
-        <p class="eyebrow">Samochód szkoleniowy</p>
-        <h2 id="auto">Dwa auta szkoleniowe – <?= e($c['vehicle'] ?: 'nowoczesne auta') ?></h2>
-        <p>Szkolimy na dwóch Kiach Rio: białej i granatowej. To zwrotne auta miejskie z dobrą widocznością dookoła. Łatwo wyczuć ich wymiary, więc szybciej opanujesz parkowanie i manewry na placu. Dwa auta to też łatwiej o wolny termin jazdy.</p>
+        <h2 id="auto">Dwie Kie Rio do nauki jazdy</h2>
+        <p>Jeździmy białą i granatową Kią Rio IV. To auta miejskie z dobrą widocznością, łatwo wyczuć ich wymiary przy parkowaniu i na placu. Dwa samochody to też więcej wolnych terminów jazd.</p>
         <ul class="ticks ticks-dark">
           <li><?= icon('check') ?> podwójne pedały i dodatkowe lusterka dla instruktora</li>
           <li><?= icon('check') ?> auto z segmentu B, typowe dla egzaminów na <?= e($cat) ?></li>

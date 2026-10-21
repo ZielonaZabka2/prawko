@@ -85,6 +85,31 @@
     }).observe(movingRoad);
   }
 
+  /* ---------- zdjęcia: łagodne pojawienie po załadowaniu (bez „wyskakiwania”) ---------- */
+  Array.prototype.forEach.call(document.querySelectorAll('main img[loading="lazy"]'), function (img) {
+    if (img.complete && img.naturalWidth) { return; }
+    img.classList.add('fade-load');
+    var done = function () { img.classList.add('is-loaded'); };
+    img.addEventListener('load', done, { once: true });
+    img.addEventListener('error', done, { once: true });
+  });
+
+  /* ---------- wariant A: auto „odjeżdża” w prawo przy przewijaniu w dół ---------- */
+  var carImg = document.querySelector('.hero-car-drive img');
+  if (carImg && !reduceMotion) {
+    carImg.addEventListener('animationend', function () {
+      carImg.classList.add('is-driven');
+      var hero = document.querySelector('.hero-a');
+      var drive = function () {
+        var r = hero.getBoundingClientRect();
+        var p = Math.max(0, Math.min(1, -r.top / Math.max(1, r.height)));
+        carImg.closest('.hero-car-drive').style.setProperty('--car-x', (p * 6).toFixed(2));
+      };
+      window.addEventListener('scroll', function () { window.requestAnimationFrame(drive); }, { passive: true });
+      drive();
+    }, { once: true });
+  }
+
   /* ---------- menu mobilne ---------- */
   var toggle = document.querySelector('.nav-toggle');
   if (toggle) {
@@ -171,10 +196,20 @@
       idx = (i + links.length) % links.length;
       var a = links[idx];
       var alt = a.querySelector('img').getAttribute('alt');
-      lbImg.src = a.getAttribute('href');
-      lbImg.alt = alt;
-      lbImg.width = a.dataset.w; lbImg.height = a.dataset.h;
-      lbCap.textContent = alt + ' (' + (idx + 1) + '/' + links.length + ')';
+      var apply = function () {
+        lbImg.src = a.getAttribute('href');
+        lbImg.alt = alt;
+        lbImg.width = a.dataset.w; lbImg.height = a.dataset.h;
+        lbCap.textContent = alt + ' (' + (idx + 1) + '/' + links.length + ')';
+        var reveal = function () { lbImg.classList.remove('is-switching'); };
+        if (lbImg.decode) { lbImg.decode().then(reveal, reveal); } else { reveal(); }
+      };
+      if (lb.open && !reduceMotion) {
+        lbImg.classList.add('is-switching');
+        window.setTimeout(apply, 140); // przenikanie: stare znika, nowe wchodzi ostre
+      } else {
+        apply();
+      }
     };
     links.forEach(function (a, i) {
       a.addEventListener('click', function (e) {

@@ -34,6 +34,10 @@ switch (true) {
     case $route === 'robots.txt':
         require APP . '/seo/robots.php';
         exit;
+    case preg_match('~^[a-f0-9]{32}\.txt$~', $route) === 1 && $route === indexnow_key() . '.txt':
+        header('Content-Type: text/plain; charset=UTF-8');
+        echo indexnow_key();
+        exit;
     case $route === 'llms.txt':
         require APP . '/seo/llms.php';
         exit;

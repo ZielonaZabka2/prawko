@@ -104,7 +104,7 @@ function course_normalize(array $c): array
 {
     return $c + [
         'slug' => '', 'category' => '', 'name' => '', 'short' => '', 'lead' => '', 'price' => 0,
-        'theory_hours' => 0, 'practice_hours' => 0, 'bonus_hours' => 0, 'vehicle' => '',
+        'theory_hours' => 0, 'practice_hours' => 0, 'bonus_hours' => 0, 'vehicle' => '', 'duration' => '',
         'includes' => '', 'content' => '', 'meta_title' => '', 'meta_description' => '',
         'active' => true, 'featured' => false, 'order' => 99,
     ];
@@ -544,4 +544,35 @@ function is_admin(): bool
     }
     $_SESSION['admin_seen'] = time();
     return true;
+}
+
+/* ---------- IndexNow: natychmiastowe zgłaszanie zmian do Bing / wyszukiwarek ---------- */
+
+function indexnow_key(): string
+{
+    $d = load_data('indexnow');
+    if (empty($d['key'])) {
+        $d['key'] = bin2hex(random_bytes(16));
+        save_data('indexnow', $d);
+    }
+    return $d['key'];
+}
+
+/** Zgłasza adresy (ścieżki) do IndexNow. Działa tylko na prawdziwej domenie, cicho ignoruje błędy. */
+function indexnow_ping(array $paths): void
+{
+    $host = parse_url(site_url(), PHP_URL_HOST);
+    if (!$host || in_array($host, ['localhost', '127.0.0.1'], true) || !function_exists('curl_init')) {
+        return;
+    }
+    $body = json_encode([
+        'host' => $host,
+        'key' => indexnow_key(),
+        'keyLocation' => site_url(indexnow_key() . '.txt'),
+        'urlList' => array_values(array_map(fn($p) => site_url(ltrim($p, '/')), $paths)),
+    ]);
+    $ch = curl_init('https://api.indexnow.org/indexnow');
+    curl_setopt_array($ch, [CURLOPT_POST => true, CURLOPT_POSTFIELDS => $body, CURLOPT_HTTPHEADER => ['Content-Type: application/json; charset=utf-8'], CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 4]);
+    @curl_exec($ch);
+    curl_close($ch);
 }

@@ -21,8 +21,8 @@ $ticker = array_filter([
   <div class="wrap hc-in">
     <p class="kicker anim-load" style="--d:0"><span class="lplate" aria-hidden="true">L</span> Szkoła Bezpiecznej Jazdy · Łomża</p>
     <h1 class="hc-title mask-lines">
-      <span class="ml"><span style="--d:1">Nauka jazdy</span></span>
-      <span class="ml"><span style="--d:2">w Łomży</span></span>
+      <span class="ml"><span class="w" style="--w:1">Nauka</span> <span class="w" style="--w:2">jazdy</span></span>
+      <span class="ml"><span class="w" style="--w:3">w</span> <span class="w" style="--w:4">Łomży</span></span>
     </h1>
     <p class="hc-lead anim-load" style="--d:3">Kurs prawa jazdy <?= e($cat) ?> za <strong><?= zl(course_price($c)) ?></strong><?php if (course_discounted($c)): ?> <s class="price-old"><?= zl(course_regular_price($c)) ?></s> <span class="chip"><?= e($promo['label']) ?> do <?= e(date_short($promo['end'])) ?></span><?php endif; ?></p>
     <div class="hero-actions anim-load" style="--d:4">
@@ -52,7 +52,7 @@ $ticker = array_filter([
 <section class="section" aria-labelledby="oferta-c">
   <div class="wrap">
     <div class="section-head" data-reveal>
-      <div><p class="eyebrow">Oferta</p><h2 id="oferta-c">Kursy i usługi</h2></div>
+      <div><h2 id="oferta-c">Kursy i usługi</h2></div>
       <a class="text-link" href="/cennik">Cennik <?= icon('arrow', 'icon icon-sm') ?></a>
     </div>
     <?php partial('course-cards', ['list' => courses(), 'withServices' => true]); ?>
@@ -61,7 +61,6 @@ $ticker = array_filter([
 
 <section class="section section-dark drive-section" aria-labelledby="kroki-c">
   <div class="wrap">
-    <p class="eyebrow" data-reveal>Przebieg</p>
     <h2 id="kroki-c" data-reveal>Od telefonu do egzaminu w 6 krokach</h2>
     <div class="drive" data-drive>
       <div class="drive-road" aria-hidden="true"><span class="drive-car"><?= icon('car', 'icon') ?></span></div>
@@ -79,8 +78,7 @@ $ticker = array_filter([
       <figcaption><?= icon('pin', 'icon icon-sm') ?> <?= e($s['street']) ?>, Łomża</figcaption>
     </figure>
     <div>
-      <p class="eyebrow" data-reveal>Dlaczego my</p>
-      <h2 id="dlaczego-c" data-reveal>Spokojnie, konkretnie, bez krzyku</h2>
+      <h2 id="dlaczego-c" data-reveal>Jak uczymy</h2>
       <ul class="checklist" data-reveal-group>
         <?php foreach ($reasons as [$t, $d]): ?><li><?= icon('check') ?><div><strong><?= e($t) ?></strong><span><?= e($d) ?></span></div></li><?php endforeach; ?>
       </ul>

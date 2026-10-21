@@ -2,7 +2,6 @@
 <section class="section" aria-labelledby="w-cenie">
   <div class="wrap split">
     <div data-reveal>
-      <p class="eyebrow">Co obejmuje kurs</p>
       <h2 id="w-cenie">Co dostajesz w cenie kursu <?= e($cat) ?>?</h2>
       <p class="bluf">W cenie <?= zl(course_price($c)) ?> masz komplet szkolenia: <?= (int) $c['theory_hours'] ?> godzin teorii, <?= (int) $c['practice_hours'] ?> godzin jazd z instruktorem<?= (int) $c['bonus_hours'] ? ', godzinę jazdy gratis' : '' ?><?= course_includes($c) ? ', ' . e(implode(', ', course_includes($c))) : '' ?>. Nie dopłacasz za nic, co jest potrzebne do ukończenia kursu.</p>
       <p>Poza ceną kursu zostają tylko dwie rzeczy, które opłacasz u innych instytucji: badanie lekarskie i opłaty za egzamin państwowy w WORD. Mówimy o tym od razu, żeby nie było niespodzianek.</p>

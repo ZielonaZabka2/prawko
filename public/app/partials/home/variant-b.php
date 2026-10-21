@@ -8,10 +8,10 @@ $reasons = require __DIR__ . '/reasons-data.php';
     <div class="hb-copy">
       <p class="kicker kicker-light anim-load" style="--d:0"><span class="lplate" aria-hidden="true">L</span> OSK Artur Żyliński · ul. Dworna 1</p>
       <h1 class="hb-title mask-lines">
-        <span class="ml"><span style="--d:1">Nauka jazdy</span></span>
-        <span class="ml"><span style="--d:2">w&nbsp;Łomży<svg class="hb-swoosh" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M3 17 C 80 5, 190 4, 297 12" /></svg></span></span>
+        <span class="ml"><span class="w" style="--w:1">Nauka</span> <span class="w" style="--w:2">jazdy</span></span>
+        <span class="ml"><span class="w w-swoosh" style="--w:3">w&nbsp;Łomży<svg class="hb-swoosh" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M3 17 C 80 5, 190 4, 297 12" /></svg></span></span>
       </h1>
-      <p class="hb-sub anim-load" style="--d:3"><?php $hl = load_data('content')['hero_lead']; if ($hl): ?><?= e($hl) ?><?php else: ?>Kurs prawa jazdy <?= e($cat) ?> od pierwszej lekcji do egzaminu w WORD. Spokojnie, konkretnie i w terminach, które pasują do Twojego dnia.<?php endif; ?></p>
+      <p class="hb-sub anim-load" style="--d:3"><?php $hl = load_data('content')['hero_lead']; if ($hl): ?><?= e($hl) ?><?php else: ?>Kurs prawa jazdy <?= e($cat) ?> od pierwszej lekcji do egzaminu wewnętrznego<?= find_course('kat-b-express') ? ', także w trybie Express w 14 dni' : '' ?>. Biuro i zapisy: ul. Dworna 1 lok. 6U.<?php endif; ?></p>
       <div class="hero-actions anim-load" style="--d:4">
         <a class="btn btn-primary btn-lg" href="/kontakt#zapis">Zapisz się na kurs <?= icon('arrow') ?></a>
         <a class="btn btn-outline btn-lg" href="<?= e(phone_href()) ?>"><?= icon('phone') ?> <?= e($s['phone']) ?></a>
@@ -24,7 +24,7 @@ $reasons = require __DIR__ . '/reasons-data.php';
     </div>
     <div class="hb-visual">
       <figure class="hb-photo anim-load anim-clip" style="--d:1">
-        <?= img('biuro-front', 'Biuro Szkoły Bezpiecznej Jazdy przy ul. Dworna 1 w Łomży', '(min-width: 1000px) 460px, 90vw', ['eager' => true, 'default_w' => 960]) ?>
+        <?= img('biuro-front', 'Biuro Szkoły Bezpiecznej Jazdy przy ul. Dworna 1 w Łomży', '(min-width: 1000px) 460px, 90vw', ['default_w' => 960]) ?>
       </figure>
       <a class="hb-sign anim-load anim-pop" style="--d:4" href="<?= e(course_url($c)) ?>" aria-label="Kurs <?= e($cat) ?>: <?= e(zl(course_price($c))) ?>">
         <span class="hb-sign-cat"><?= e($c['category']) ?></span>
@@ -73,8 +73,7 @@ $reasons = require __DIR__ . '/reasons-data.php';
 
 <section class="section" aria-labelledby="dlaczego-b">
   <div class="wrap">
-    <p class="eyebrow" data-reveal>Dlaczego my</p>
-    <h2 id="dlaczego-b" class="h2-wide" data-reveal>Uczymy bezpiecznej jazdy, nie tylko zdawania egzaminu</h2>
+    <h2 id="dlaczego-b" class="h2-wide" data-reveal>Jak uczymy w Szkole Bezpiecznej Jazdy</h2>
     <ol class="numbered" data-reveal-group>
       <?php foreach ($reasons as $i => [$t, $d]): ?>
         <li><span class="num"><?= sprintf('%02d', $i + 1) ?></span><h3><?= e($t) ?></h3><p><?= e($d) ?></p></li>

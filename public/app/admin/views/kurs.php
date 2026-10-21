@@ -19,6 +19,7 @@ $c ??= course_normalize(['id' => '', 'active' => false, 'order' => count(courses
         <?= field('price', 'Cena kursu', $c['price'], ['type' => 'number', 'min' => 0, 'suffix' => 'zł', 'required' => true]) ?>
         <?= field('vehicle', 'Pojazd szkoleniowy', $c['vehicle'], ['maxlength' => 80, 'placeholder' => 'np. Kia Rio IV']) ?>
       </div>
+      <?= field('duration', 'Czas trwania kursu', $c['duration'], ['maxlength' => 80, 'placeholder' => 'np. 14 dni, zajęcia codziennie', 'help' => 'Widoczne w porównaniu kursów na stronie „Kursy”.']) ?>
       <div class="grid-3">
         <?= field('theory_hours', 'Godziny teorii', $c['theory_hours'], ['type' => 'number', 'min' => 0, 'suffix' => 'h']) ?>
         <?= field('practice_hours', 'Godziny jazd', $c['practice_hours'], ['type' => 'number', 'min' => 0, 'suffix' => 'h']) ?>
