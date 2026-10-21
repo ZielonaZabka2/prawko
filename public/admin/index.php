@@ -46,6 +46,31 @@ if (!is_admin()) {
     exit;
 }
 
+/* ---------- kopia zapasowa (ZIP z /data i /uploads) ---------- */
+if ($page === 'kopia') {
+    if (!class_exists('ZipArchive')) {
+        flash('Serwer nie obsługuje plików ZIP – pobierz katalogi data/ i uploads/ przez FTP.', 'error');
+        redirect('?p=start');
+    }
+    $tmp = tempnam(sys_get_temp_dir(), 'osk');
+    $zip = new ZipArchive();
+    $zip->open($tmp, ZipArchive::OVERWRITE);
+    foreach (glob(DATA . '/*.json') ?: [] as $f) {
+        if (basename($f) !== 'login_attempts.json') { $zip->addFile($f, 'data/' . basename($f)); }
+    }
+    foreach (glob(UPLOADS . '/*.webp') ?: [] as $f) {
+        $zip->addFile($f, 'uploads/' . basename($f));
+    }
+    $zip->addFromString('JAK-PRZYWROCIC.txt', "Wgraj katalogi data/ i uploads/ przez FTP do katalogu strony, nadpisując istniejące pliki.\n");
+    $zip->close();
+    header('Content-Type: application/zip');
+    header('Content-Disposition: attachment; filename="kopia-strony-osk-' . date('Y-m-d') . '.zip"');
+    header('Content-Length: ' . filesize($tmp));
+    readfile($tmp);
+    @unlink($tmp);
+    exit;
+}
+
 /* ---------- akcje (POST) ---------- */
 if ($method === 'POST') {
     if (!csrf_check()) {
@@ -62,6 +87,9 @@ $views = [
     'kursy' => 'Kursy',
     'kurs' => 'Edycja kursu',
     'cennik' => 'Cennik',
+    'tresci' => 'Treści strony',
+    'faq' => 'FAQ',
+    'opinie' => 'Opinie',
     'promocja' => 'Promocja i popup',
     'blog' => 'Blog',
     'wpis' => 'Edycja wpisu',

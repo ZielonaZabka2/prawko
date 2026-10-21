@@ -35,7 +35,7 @@ Strona to zwykłe pliki PHP, bez bazy danych. Wgrywasz zawartość folderu **`pu
 
 Wgrywaj nowe pliki **z pominięciem katalogów `data/` i `uploads/`**. Tam są ceny, promocje, wpisy na blogu, wiadomości i hasło ustawione w panelu. Nadpisanie ich cofnie zmiany Artura.
 
-Kopia zapasowa = pobranie przez FTP katalogów `data/` i `uploads/`.
+Kopia zapasowa: **panel → Pulpit → Pobierz kopię zapasową** (ZIP z `data/` i `uploads/`) albo pobranie tych katalogów przez FTP. Przywrócenie = wgranie ich z powrotem przez FTP.
 
 ## Gdzie co jest
 

@@ -104,29 +104,54 @@
   }
 
   /* ---------- popup promocji ----------
-     Pokazuje się po X sekundach (ustawiane w panelu). Po zamknięciu nie wraca
+     Moment pokazania ustawiany w panelu: po X sekundach, po przewinięciu X% strony
+     albo przy próbie wyjścia (kursor ucieka do paska kart). Po zamknięciu nie wraca
      przez N dni. Nie przerywa wypełniania formularza ani otwartego menu. */
   var promo = document.getElementById('promo-dialog');
   if (promo && typeof promo.showModal === 'function') {
     var key = promo.dataset.key;
-    var delay = Math.max(0, parseInt(promo.dataset.delay, 10) || 10) * 1000;
+    var d = parseInt(promo.dataset.delay, 10);
+    var delay = (isNaN(d) ? 10 : Math.max(0, d)) * 1000;
     var repeatDays = Math.max(0, parseInt(promo.dataset.repeat, 10) || 0);
+    var trigger = promo.dataset.trigger || 'time';
+    var scrollPct = Math.min(95, Math.max(5, parseInt(promo.dataset.scroll, 10) || 40));
+    var isMobile = window.matchMedia('(max-width: 760px)').matches;
     var last = parseInt(store.get(key) || '0', 10);
     var due = !last || (repeatDays > 0 && Date.now() - last > repeatDays * 864e5);
     var onContactPage = document.body.classList.contains('page-kontakt');
-
     var force = promo.dataset.force === '1';
-    if (force) { delay = 600; }
-    if (force || (due && !onContactPage)) {
-      var timer = window.setTimeout(function tryOpen() {
-        var active = document.activeElement;
-        var busy = document.body.classList.contains('nav-open') ||
-          (active && /^(INPUT|TEXTAREA|SELECT)$/.test(active.tagName)) ||
-          document.querySelector('dialog[open]');
-        if (busy) { timer = window.setTimeout(tryOpen, 4000); return; }
-        promo.showModal();
-        if (!force) { store.set(key, String(Date.now())); }
-      }, delay);
+    var opened = false;
+    if (isMobile && trigger === 'exit') { trigger = 'scroll'; } // na telefonie nie ma „wyjścia kursorem”
+
+    var tryOpen = function () {
+      if (opened) { return; }
+      var active = document.activeElement;
+      var busy = document.body.classList.contains('nav-open') ||
+        (active && /^(INPUT|TEXTAREA|SELECT)$/.test(active.tagName)) ||
+        document.querySelector('dialog[open]');
+      if (busy) { window.setTimeout(tryOpen, 4000); return; }
+      opened = true;
+      promo.showModal();
+      if (!force) { store.set(key, String(Date.now())); }
+    };
+
+    if (force) {
+      window.setTimeout(tryOpen, 600);
+    } else if (due && !onContactPage && !(isMobile && promo.dataset.mobile === '0')) {
+      if (trigger === 'scroll') {
+        var onSc = function () {
+          var max = document.documentElement.scrollHeight - window.innerHeight;
+          if (max > 0 && window.scrollY / max * 100 >= scrollPct) { window.removeEventListener('scroll', onSc); tryOpen(); }
+        };
+        window.addEventListener('scroll', onSc, { passive: true });
+      } else if (trigger === 'exit') {
+        document.addEventListener('mouseout', function onOut(e) {
+          if (!e.relatedTarget && e.clientY <= 0) { document.removeEventListener('mouseout', onOut); tryOpen(); }
+        });
+        window.setTimeout(tryOpen, Math.max(delay, 45000)); // zapas: jeśli ktoś długo czyta
+      } else {
+        window.setTimeout(tryOpen, delay);
+      }
     }
     promo.addEventListener('click', function (e) {
       if (e.target === promo) { promo.close(); } // klik w tło zamyka

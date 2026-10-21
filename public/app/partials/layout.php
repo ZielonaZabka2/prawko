@@ -41,6 +41,9 @@ if ($meta['breadcrumbs']) {
 <meta property="og:image" content="<?= e($meta['og_image']) ?>">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#15171a">
+<?php if ($s['gsc_verification'] ?? ''): ?><meta name="google-site-verification" content="<?= e($s['gsc_verification']) ?>">
+<?php endif; ?><?php if ($s['bing_verification'] ?? ''): ?><meta name="msvalidate.01" content="<?= e($s['bing_verification']) ?>">
+<?php endif; ?>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/assets/img/logo-192.png" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -54,6 +57,16 @@ if ($meta['breadcrumbs']) {
 <body class="<?= e(trim('page-' . $meta['nav'] . ' ' . $meta['body_class'])) ?>">
 <a class="skip" href="#main">Przejdź do treści</a>
 
+<?php
+$today = date('Y-m-d');
+$noticeOn = trim((string) ($s['notice_text'] ?? '')) !== ''
+    && (empty($s['notice_start']) || $today >= $s['notice_start'])
+    && (empty($s['notice_end']) || $today <= $s['notice_end']);
+if ($noticeOn): ?>
+<div class="notice-bar" role="status">
+  <div class="wrap notice-in"><?= icon('calendar', 'icon icon-sm') ?> <span><?= e($s['notice_text']) ?></span><?php if (!empty($s['notice_link'])): ?> <a href="<?= e($s['notice_link']) ?>">Szczegóły</a><?php endif; ?></div>
+</div>
+<?php endif; ?>
 <?php if ($promoOn && !empty($promo['bar'])): ?>
 <div class="promo-bar">
   <div class="wrap promo-bar-in">
@@ -145,35 +158,13 @@ if ($meta['breadcrumbs']) {
   <a href="/kontakt#zapis" class="action-sign"><?= icon('calendar') ?> Zapisz się</a>
 </div>
 
-<?php if ($promoPreview || ($promoOn && !empty($promo['popup']) && $meta['nav'] !== '404')): ?>
-<dialog class="promo-dialog" id="promo-dialog" aria-labelledby="promo-title"
-        data-delay="<?= (int) $promo['delay'] ?>" data-repeat="<?= (int) $promo['repeat_days'] ?>"
-        data-key="promo-<?= e($promo['version'] . '-' . $promo['start']) ?>"<?= $promoPreview ? ' data-force="1"' : '' ?>>
-  <form method="dialog" class="promo-close-form">
-    <button class="promo-close" value="close" aria-label="Zamknij"><?= icon('close') ?></button>
-  </form>
-  <?php if (!empty($promo['image']) && image_variants($promo['image'])): ?>
-    <div class="promo-media"><?= img($promo['image'], '', '440px', ['default_w' => 480]) ?></div>
-  <?php endif; ?>
-  <div class="promo-dialog-in" tabindex="-1" autofocus>
-    <p class="promo-tag"><?= e($promo['label']) ?></p>
-    <h2 id="promo-title"><?= e($promo['title']) ?></h2>
-    <?php $pc = find_course(promo_course_slug()); if ($pc && (int) $promo['price'] > 0 && (int) $promo['price'] < course_regular_price($pc)): ?>
-      <p class="promo-price">
-        <span class="price-new"><?= zl((int) $promo['price']) ?></span>
-        <s class="price-old"><span class="sr-only">zamiast </span><?= zl(course_regular_price($pc)) ?></s>
-      </p>
-    <?php endif; ?>
-    <p class="promo-text"><?= e($promo['text']) ?></p>
-    <?php if ($promo['perk']): ?><p class="promo-perk"><?= icon('check') ?> <?= e($promo['perk']) ?></p><?php endif; ?>
-    <div class="promo-actions">
-      <a class="btn btn-primary" href="<?= e($promo['cta_url']) ?>"><?= e($promo['cta_label']) ?></a>
-      <a class="btn btn-ghost-dark" href="<?= e(phone_href()) ?>"><?= icon('phone') ?> <?= e($s['phone']) ?></a>
-    </div>
-    <p class="promo-terms">Oferta ważna od <?= e(date_short($promo['start'])) ?> do <?= e(date_short($promo['end'])) ?>. <a href="/regulamin#promocje">Warunki promocji</a></p>
-  </div>
-</dialog>
-<?php endif; ?>
+<?php
+$popupPages = $promo['pages'] ?? 'all';
+$popupHere = $popupPages === 'all' || ($popupPages === 'home' && $meta['nav'] === 'home') || ($popupPages === 'courses' && in_array($meta['nav'], ['home', 'kurs', 'kursy', 'cennik'], true));
+if ($promoPreview || ($promoOn && !empty($promo['popup']) && $popupHere && $meta['nav'] !== '404')) {
+    partial('promo-popup', ['promo' => $promo, 'preview' => $promoPreview]);
+}
+?>
 
 <script src="<?= asset('assets/js/main.js') ?>" defer></script>
 </body>

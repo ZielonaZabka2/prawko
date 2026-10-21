@@ -33,6 +33,16 @@
     </div>
   </fieldset>
   <fieldset>
+    <legend>Komunikat na górze strony <span class="muted">(opcjonalnie)</span></legend>
+    <p class="help">Np. „1 i 11 listopada biuro nieczynne” albo „Nowy termin kursu od 3 listopada”. Pokazuje się w żółtym pasku nad menu, tylko w wybranych dniach.</p>
+    <?= field('notice_text', 'Treść komunikatu', $s['notice_text'] ?? '', ['maxlength' => 160, 'help' => 'Puste = brak komunikatu.']) ?>
+    <div class="grid-3">
+      <?= field('notice_start', 'Od dnia', $s['notice_start'] ?? '', ['type' => 'date']) ?>
+      <?= field('notice_end', 'Do dnia', $s['notice_end'] ?? '', ['type' => 'date']) ?>
+      <?= field('notice_link', 'Link „Szczegóły” (opcjonalnie)', $s['notice_link'] ?? '', ['placeholder' => '/kontakt']) ?>
+    </div>
+  </fieldset>
+  <fieldset>
     <legend>Internet</legend>
     <div class="grid-2">
       <?= field('facebook', 'Profil na Facebooku (adres)', $s['facebook'], ['type' => 'url', 'placeholder' => 'https://www.facebook.com/…']) ?>
@@ -43,6 +53,10 @@
       <?= field('lng', 'Długość geogr. (opcjonalnie)', $s['lng'], ['placeholder' => 'np. 22.06']) ?>
     </div>
     <?= field('site_url', 'Adres strony', $s['site_url'], ['type' => 'url', 'help' => 'Zmień na https://…, gdy włączysz certyfikat SSL.']) ?>
+    <div class="grid-2">
+      <?= field('gsc_verification', 'Kod weryfikacyjny Google Search Console', $s['gsc_verification'] ?? '', ['help' => 'Z Search Console → Weryfikacja → Tag HTML: wklej tylko wartość <code>content</code>.']) ?>
+      <?= field('bing_verification', 'Kod weryfikacyjny Bing Webmaster', $s['bing_verification'] ?? '', ['help' => 'Wartość <code>content</code> z tagu msvalidate.01.']) ?>
+    </div>
   </fieldset>
   <fieldset>
     <legend>Dane rejestrowe (do regulaminu i polityki prywatności)</legend>

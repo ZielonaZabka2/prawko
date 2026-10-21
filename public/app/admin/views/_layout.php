@@ -1,10 +1,13 @@
 <?php
 $unread = unread_count();
 $nav = [
-    'start' => ['Pulpit', 'home'],
+    'start' => ['Pulpit', 'route'],
     'promocja' => ['Promocja i popup', 'calendar'],
     'kursy' => ['Kursy', 'car'],
     'cennik' => ['Cennik i usługi', 'wallet'],
+    'tresci' => ['Treści strony', 'home'],
+    'faq' => ['FAQ', 'book'],
+    'opinie' => ['Opinie', 'user'],
     'blog' => ['Blog', 'book'],
     'wiadomosci' => ['Wiadomości', 'mail'],
     'firma' => ['Dane firmy', 'pin'],

@@ -44,4 +44,7 @@ $postsAll = posts(false);
 <div class="actions">
   <a class="btn" href="?p=wpis">+ Nowy wpis na blogu</a>
   <a class="btn btn-ghost" href="/?podglad-popup=1" target="_blank" rel="noopener">Podejrzyj popup promocji</a>
+  <a class="btn btn-ghost" href="?p=kopia">Pobierz kopię zapasową</a>
 </div>
+
+<p class="help">Kopia zapasowa to plik ZIP ze wszystkimi ustawieniami, kursami, wpisami, opiniami, wiadomościami i wgranymi zdjęciami. Warto ją pobierać raz w miesiącu.</p>

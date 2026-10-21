@@ -114,7 +114,15 @@ function faq_items(string $set = 'home', ?array $course = null): array
         'noclegi' => ['nocleg', 'czas', 'gdzie'],
     ];
     $keys = array_filter($sets[$set] ?? $sets['home'], fn($k) => isset($items[$k]));
-    return array_values(array_map(fn($k) => $items[$k], $keys));
+    $list = array_values(array_map(fn($k) => $items[$k], $keys));
+    // własne pytania z panelu → FAQ
+    foreach (load_data('faq') as $f) {
+        $where = $f['where'] ?? 'home';
+        if (!empty($f['q']) && !empty($f['a']) && ($where === 'all' || $where === $set)) {
+            $list[] = [$f['q'], $f['a']];
+        }
+    }
+    return $list;
 }
 
 function faq_html(array $items, string $heading = 'Najczęstsze pytania'): string

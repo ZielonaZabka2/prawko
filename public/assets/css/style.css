@@ -899,3 +899,34 @@ a.contact-card:hover { border-color: var(--ink); }
 .car-gallery img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 16 / 10; }
 .car-gallery .car-main { grid-column: 1 / -1; }
 .car-gallery .car-main img { aspect-ratio: 16 / 9; }
+
+/* style popupu do wyboru w panelu */
+.promo-theme-orange .promo-dialog-in > .promo-tag, .promo-theme-orange .promo-dialog-in > h2, .promo-theme-orange .promo-dialog-in > .promo-price { background: var(--orange); color: var(--ink); }
+.promo-theme-orange .promo-tag { color: var(--ink) !important; }
+.promo-theme-orange .promo-price { border-bottom-color: var(--ink); }
+.promo-theme-orange .promo-price .price-new { color: var(--ink); }
+.promo-theme-orange .promo-price .price-old { color: rgba(21, 23, 26, .7); }
+.promo-theme-orange .price-old::after { background: var(--ink); }
+.promo-theme-orange .promo-media::after { background: linear-gradient(0deg, var(--orange), transparent); }
+.promo-theme-light .promo-dialog-in > .promo-tag, .promo-theme-light .promo-dialog-in > h2, .promo-theme-light .promo-dialog-in > .promo-price { background: var(--white); color: var(--ink); }
+.promo-theme-light .promo-tag { color: var(--orange-ink) !important; }
+.promo-theme-light .promo-price .price-new { color: var(--orange-ink); }
+.promo-theme-light .promo-price .price-old { color: var(--muted); }
+.promo-theme-light .promo-media::after { display: none; }
+.promo-dialog-in > h2:last-child, .promo-dialog-in > h2 + .promo-text { margin-top: 0; }
+.promo-dialog-in > h2:not(:has(+ .promo-price)) { padding-bottom: 18px; border-bottom: 4px solid var(--orange); margin-bottom: 18px; }
+
+/* komunikat (np. zmiana godzin) */
+.notice-bar { background: #fff4c2; color: #4d3d00; font-size: .95rem; border-bottom: 1px solid #ecd98a; }
+.notice-in { display: flex; align-items: center; gap: 8px; min-height: 40px; padding-top: 6px; padding-bottom: 6px; }
+.notice-in a { color: #4d3d00; font-weight: 600; }
+
+/* opinie */
+.review-grid { list-style: none; padding: 0; margin: 28px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 16px; }
+.review { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 22px 24px; display: flex; flex-direction: column; }
+.review blockquote { margin: 0 0 14px; flex: 1; }
+.review blockquote p { margin: 0; font-size: 1.05rem; }
+.stars { color: var(--orange); letter-spacing: 2px; margin: 0 0 10px; font-size: 1.1rem; }
+.stars span { color: var(--line); }
+.review-by { margin: 0; color: var(--muted); font-size: .95rem; }
+.review-by strong { color: var(--text); }

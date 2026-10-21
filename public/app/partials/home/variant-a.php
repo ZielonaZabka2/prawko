@@ -12,7 +12,7 @@ $reasons = require __DIR__ . '/reasons-data.php';
         <span class="ml"><span style="--d:2">w Łomży</span></span>
         <span class="ml h1-sub"><span style="--d:3">Kurs prawa jazdy <?= e($cat) ?></span></span>
       </h1>
-      <p class="lead anim-load" style="--d:4">Przygotujemy Cię do egzaminu w WORD i do jazdy, która zaczyna się dzień po nim. Spokojnie, bez krzyku, w terminach dopasowanych do Twojego planu dnia.</p>
+      <p class="lead anim-load" style="--d:4"><?= e(load_data('content')['hero_lead'] ?: 'Przygotujemy Cię do egzaminu w WORD i do jazdy, która zaczyna się dzień po nim. Spokojnie, bez krzyku, w terminach dopasowanych do Twojego planu dnia.') ?></p>
       <div class="hero-actions anim-load" style="--d:5">
         <a class="btn btn-primary btn-lg" href="/kontakt#zapis">Zapisz się na kurs <?= icon('arrow') ?></a>
         <a class="btn btn-ghost btn-lg" href="<?= e(phone_href()) ?>"><?= icon('phone') ?> <?= e($s['phone']) ?></a>
@@ -101,5 +101,6 @@ $reasons = require __DIR__ . '/reasons-data.php';
 </section>
 
 <?php partial('home/stay'); ?>
+<?php partial('home/reviews'); ?>
 <?= faq_html($faq, 'Pytania, które słyszymy najczęściej') ?>
 <?php partial('home/contact'); ?>

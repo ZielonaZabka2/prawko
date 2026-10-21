@@ -11,7 +11,7 @@ $reasons = require __DIR__ . '/reasons-data.php';
         <span class="ml"><span style="--d:1">Nauka jazdy</span></span>
         <span class="ml"><span style="--d:2">w&nbsp;Łomży<svg class="hb-swoosh" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M3 17 C 80 5, 190 4, 297 12" /></svg></span></span>
       </h1>
-      <p class="hb-sub anim-load" style="--d:3">Kurs prawa jazdy <?= e($cat) ?> od pierwszej lekcji do egzaminu w WORD. Spokojnie, konkretnie i w terminach, które pasują do Twojego dnia.</p>
+      <p class="hb-sub anim-load" style="--d:3"><?php $hl = load_data('content')['hero_lead']; if ($hl): ?><?= e($hl) ?><?php else: ?>Kurs prawa jazdy <?= e($cat) ?> od pierwszej lekcji do egzaminu w WORD. Spokojnie, konkretnie i w terminach, które pasują do Twojego dnia.<?php endif; ?></p>
       <div class="hero-actions anim-load" style="--d:4">
         <a class="btn btn-primary btn-lg" href="/kontakt#zapis">Zapisz się na kurs <?= icon('arrow') ?></a>
         <a class="btn btn-outline btn-lg" href="<?= e(phone_href()) ?>"><?= icon('phone') ?> <?= e($s['phone']) ?></a>
@@ -90,5 +90,6 @@ $reasons = require __DIR__ . '/reasons-data.php';
 
 <?php partial('home/included', compact('c', 'cat')); ?>
 <?php partial('home/stay'); ?>
+<?php partial('home/reviews'); ?>
 <div class="faq-split"><?= faq_html($faq, 'Pytania, które słyszymy najczęściej') ?></div>
 <?php partial('home/contact'); ?>

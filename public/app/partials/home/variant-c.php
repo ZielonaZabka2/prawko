@@ -90,5 +90,6 @@ $ticker = array_filter([
 
 <?php partial('home/stay'); ?>
 <?php partial('home/included', compact('c', 'cat')); ?>
+<?php partial('home/reviews'); ?>
 <div class="faq-split"><?= faq_html($faq, 'Pytania, które słyszymy najczęściej') ?></div>
 <?php partial('home/contact'); ?>

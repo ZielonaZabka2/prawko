@@ -69,3 +69,81 @@
     });
   }
 })();
+
+/* ---------- podgląd popupu na żywo (panel → Promocja) ---------- */
+(function () {
+  'use strict';
+  var form = document.getElementById('promo-form');
+  var frame = document.getElementById('pe-iframe');
+  if (!form || !frame) { return; }
+  var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var zl = function (n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' zł'; };
+  var val = function (n) { var el = form.elements[n]; return el ? el.value : ''; };
+  var on = function (n) { var el = form.elements[n]; return !!(el && el.checked); };
+  var check = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
+  var close = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+  var regular = {};
+  try { regular = JSON.parse(form.elements.course.dataset.regular || '{}'); } catch (e) {}
+  var fileUrl = '';
+  var fileInput = form.elements.image_file;
+  if (fileInput) {
+    fileInput.addEventListener('change', function () {
+      if (fileUrl) { URL.revokeObjectURL(fileUrl); }
+      fileUrl = fileInput.files[0] ? URL.createObjectURL(fileInput.files[0]) : '';
+      render();
+    });
+  }
+  var fmtDate = function (v) { var p = v.split('-'); return p.length === 3 ? p[2] + '.' + p[1] + '.' + p[0] : ''; };
+
+  function render() {
+    var theme = (form.querySelector('[name=theme]:checked') || {}).value || 'dark';
+    var picked = form.querySelector('[name=image]:checked');
+    var src = fileUrl || (picked ? picked.dataset.src : '');
+    var price = parseInt(val('price'), 10) || 0;
+    var reg = regular[val('course')] || 0;
+    var perks = val('perk').split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+    var h = '';
+    h += '<dialog open class="promo-dialog promo-theme-' + theme + '">';
+    h += '<div class="promo-close-form"><span class="promo-close">' + close + '</span></div>';
+    if (src) { h += '<div class="promo-media"><img src="' + esc(src) + '" alt=""></div>'; }
+    h += '<div class="promo-dialog-in">';
+    if (val('label')) { h += '<p class="promo-tag">' + esc(val('label')) + '</p>'; }
+    h += '<h2>' + esc(val('title') || 'Tytuł promocji') + '</h2>';
+    if (price > 0 && price < reg) { h += '<p class="promo-price"><span class="price-new">' + zl(price) + '</span><s class="price-old">' + zl(reg) + '</s></p>'; }
+    if (val('text')) { h += '<p class="promo-text">' + esc(val('text')) + '</p>'; }
+    perks.forEach(function (p) { h += '<p class="promo-perk">' + check + ' ' + esc(p) + '</p>'; });
+    h += '<div class="promo-actions"><a class="btn btn-primary">' + esc(val('cta_label') || 'Zapisz się') + '</a>';
+    if (on('show_phone')) { h += '<a class="btn btn-ghost-dark">' + esc(frame.dataset.phone) + '</a>'; }
+    h += '</div>';
+    if (on('show_terms')) { h += '<p class="promo-terms">Oferta ważna od ' + fmtDate(val('start')) + ' do ' + fmtDate(val('end')) + '. <a>Warunki promocji</a></p>'; }
+    h += '</div></dialog>';
+    var doc = '<!doctype html><html lang="pl"><head><meta charset="utf-8"><link rel="stylesheet" href="' + esc(frame.dataset.css) + '">' +
+      '<style>html,body{margin:0;min-height:100%;background:rgba(10,11,13,.62)!important;padding:0!important}body{display:grid;place-items:center;padding:16px!important}' +
+      '.promo-dialog{position:static;margin:16px auto;animation:none!important}.price-old::after{animation:none!important;transform:scaleX(1)!important}</style></head><body>' + h + '</body></html>';
+    frame.srcdoc = doc;
+  }
+  var t;
+  form.addEventListener('input', function () { clearTimeout(t); t = setTimeout(render, 150); });
+  form.addEventListener('change', render);
+  render();
+})();
+
+/* ---------- listy z dodawaniem i usuwaniem wierszy ---------- */
+(function () {
+  'use strict';
+  document.querySelectorAll('[data-repeater]').forEach(function (rep) {
+    var rows = rep.querySelector('.rep-rows');
+    var tpl = rep.querySelector('template');
+    var n = rows.children.length + 100;
+    rep.querySelector('.rep-add').addEventListener('click', function () {
+      var html = tpl.innerHTML.replace(/__i/g, String(n++));
+      rows.insertAdjacentHTML('beforeend', html);
+      var first = rows.lastElementChild.querySelector('input, textarea');
+      if (first) { first.focus(); }
+    });
+    rows.addEventListener('click', function (e) {
+      var del = e.target.closest('.rep-del');
+      if (del) { del.closest('.rep-row').remove(); }
+    });
+  });
+})();

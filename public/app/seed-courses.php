@@ -63,29 +63,29 @@ Dokładną instrukcję znajdziesz w artykule [jak wyrobić PKK w Łomży](/blog/
 MD,
     ],
     [
-        'id' => 'kat-b-14-dni',
-        'slug' => 'kat-b-14-dni',
+        'id' => 'kat-b-express',
+        'slug' => 'kat-b-express',
         'category' => 'B',
-        'name' => 'Kurs kat. B w 14 dni',
-        'short' => 'Kurs intensywny',
-        'lead' => 'Cały kurs prawa jazdy w dwa tygodnie – dla osób, które chcą zrobić prawo jazdy szybko.',
+        'name' => 'Kurs kat. B Express – 14 dni',
+        'short' => 'Kurs ekspresowy',
+        'lead' => 'Kurs Express: całe szkolenie w dwa tygodnie, dla osób, które chcą zrobić prawo jazdy szybko. Cena nie obejmuje noclegu.',
         'price' => 3400,
         'theory_hours' => 30,
         'practice_hours' => 30,
         'bonus_hours' => 0,
         'vehicle' => 'Kia Rio IV',
         'includes' => "materiały szkoleniowe\negzamin wewnętrzny\nplan zajęć na 14 dni",
-        'meta_title' => 'Kurs prawa jazdy w 14 dni – Łomża | OSK Żyliński',
+        'meta_title' => 'Kurs prawa jazdy Express w 14 dni – Łomża | OSK Żyliński',
         'meta_description' => '',
         'active' => true,
         'featured' => false,
         'order' => 2,
         'content' => <<<'MD'
-## Ile kosztuje kurs prawa jazdy w 14 dni?
+## Ile kosztuje kurs prawa jazdy Express w 14 dni?
 
-Intensywny kurs kat. B trwa 14 dni i kosztuje {cena}. Obejmuje pełny zakres szkolenia: {teoria} godzin teorii, {praktyka} godzin jazd, materiały szkoleniowe i egzamin wewnętrzny.
+Kurs kat. B Express trwa 14 dni i kosztuje {cena}. Jest droższy od standardowego kursu, bo wymaga codziennych zajęć i rezerwacji instruktora oraz auta na cały okres szkolenia. Obejmuje pełny zakres szkolenia: {teoria} godzin teorii, {praktyka} godzin jazd, materiały szkoleniowe i egzamin wewnętrzny.
 
-## Dla kogo jest kurs 14-dniowy?
+## Dla kogo jest kurs Express?
 
 Dla osób, które mają czas na codzienne zajęcia i chcą zamknąć kurs w dwa tygodnie: studentów w czasie wakacji, osób na urlopie, pracujących za granicą, którzy przyjeżdżają do Polski na krótko.
 
@@ -97,7 +97,9 @@ Teoria i jazdy odbywają się codziennie, według planu ustalonego indywidualnie
 
 Numer PKK musi być gotowy w dniu rozpoczęcia kursu – inaczej nie zmieścimy się w 14 dniach. Jak go wyrobić, opisujemy w artykule [PKK w Łomży](/blog/profil-kandydata-na-kierowce-pkk-lomza).
 
-Przyjeżdżasz spoza Łomży? Na czas kursu możesz zamieszkać w naszym [mieszkaniu dla kursantów](/noclegi-dla-kursantow).
+## Czy kurs Express obejmuje nocleg?
+
+Nie. Cena kursu Express nie obejmuje zakwaterowania. Jeśli przyjeżdżasz spoza Łomży, mieszkanie dla kursantów możesz wynająć osobno – szczegóły na stronie [noclegi dla kursantów](/noclegi-dla-kursantow).
 MD,
     ],
 ];

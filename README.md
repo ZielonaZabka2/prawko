@@ -3,7 +3,7 @@
 Strona internetowa ośrodka szkolenia kierowców: kurs prawa jazdy kat. B, jazdy doszkalające, noclegi dla kursantów, blog, popup z promocją i panel administratora.
 
 - **Technologia:** PHP 8.1+ bez bazy danych (dane w plikach JSON), czysty HTML/CSS/JS, czcionki trzymane na serwerze.
-- **Panel:** `/admin`, gdzie Artur zmienia kursy (kolejne kategorie A, C…), ceny, promocję i popup (daty, opóźnienie, treść), wpisy bloga, dane firmy i czyta wiadomości z formularza.
+- **Panel:** `/admin`, gdzie Artur zmienia kursy (kolejne kategorie A, C…), ceny, promocję i popup (z podglądem na żywo: treść, zdjęcie, styl, kiedy i gdzie się pokazuje), treści strony głównej, własne FAQ, opinie, komunikat na górze strony, wpisy bloga, dane firmy, czyta wiadomości i pobiera kopię zapasową.
 - **SEO/GEO:** dane strukturalne (DrivingSchool, FAQPage, BlogPosting, Service, Breadcrumbs) generowane z tych samych danych co treść, sitemap.xml, robots.txt z dostępem dla botów AI, llms.txt.
 
 Dokumenty:

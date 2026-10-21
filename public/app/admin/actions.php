@@ -33,18 +33,23 @@ switch ($page) {
         $old = promo();
         $p = $old;
         $p['enabled'] = post_bool('enabled');
-        $p['label'] = post_str('label', 40) ?: 'Promocja';
+        $p['label'] = post_str('label', 40);
         $p['title'] = post_str('title', 80);
         $p['text'] = post_str('text', 400);
         $p['price'] = post_int('price', 0, 100000);
-        $p['perk'] = post_str('perk', 120);
+        $p['perk'] = post_str('perk', 400);
         $p['start'] = post_date('start');
         $p['end'] = post_date('end');
         $p['popup'] = post_bool('popup');
         $p['bar'] = post_bool('bar');
-        $img = (string) ($_POST['image'] ?? '');
-        $p['image'] = $img === '' || image_variants($img) ? $img : '';
+        $p['mobile'] = post_bool('mobile');
+        $p['show_phone'] = post_bool('show_phone');
+        $p['show_terms'] = post_bool('show_terms');
+        $p['theme'] = in_array($_POST['theme'] ?? '', ['dark', 'orange', 'light'], true) ? $_POST['theme'] : 'dark';
+        $p['trigger'] = in_array($_POST['trigger'] ?? '', ['time', 'scroll', 'exit'], true) ? $_POST['trigger'] : 'time';
+        $p['pages'] = in_array($_POST['pages'] ?? '', ['all', 'courses', 'home'], true) ? $_POST['pages'] : 'all';
         $p['delay'] = post_int('delay', 0, 120);
+        $p['scroll_pct'] = post_int('scroll_pct', 5, 95);
         $p['repeat_days'] = post_int('repeat_days', 0, 60);
         $p['cta_label'] = post_str('cta_label', 40) ?: 'Zapisz się';
         $p['cta_url'] = post_url('cta_url') ?: '/kontakt#zapis';
@@ -53,10 +58,30 @@ switch ($page) {
             flash('Data końca jest wcześniejsza niż data startu – popraw daty.', 'error');
             redirect('?p=promocja');
         }
+        // zdjęcie: własne (wgrane) albo z galerii strony
+        $pick = (string) ($_POST['image'] ?? '');
+        if (!empty($_FILES['image_file']['name'])) {
+            $res = process_upload($_FILES['image_file'], 'popup');
+            if (str_starts_with($res, '!')) {
+                flash('Zdjęcie: ' . substr($res, 1), 'error');
+            } else {
+                if (($old['image_dir'] ?? '') === 'uploads' && !empty($old['image'])) {
+                    delete_upload($old['image']);
+                }
+                $p['image'] = $res;
+                $p['image_dir'] = 'uploads';
+            }
+        } elseif ($pick !== '__own') {
+            if (($old['image_dir'] ?? '') === 'uploads' && !empty($old['image'])) {
+                delete_upload($old['image']);
+            }
+            $p['image'] = $pick === '' || image_variants($pick) ? $pick : '';
+            $p['image_dir'] = 'assets/img';
+        }
         // nowa treść promocji = popup pokaże się ponownie także tym, którzy go zamknęli
         $changed = false;
-        foreach (['title', 'text', 'price', 'start', 'end', 'course', 'image'] as $k) {
-            $changed = $changed || (string) $old[$k] !== (string) $p[$k];
+        foreach (['title', 'text', 'price', 'start', 'end', 'course', 'image', 'perk'] as $k) {
+            $changed = $changed || (string) ($old[$k] ?? '') !== (string) ($p[$k] ?? '');
         }
         if ($changed || post_bool('reset_popup')) {
             $p['version'] = (string) time();
@@ -192,6 +217,50 @@ switch ($page) {
         save_data('courses', $all) ? flash('Kurs zapisany.') : flash('Nie udało się zapisać.', 'error');
         redirect('?p=kurs&id=' . urlencode($c['id']));
 
+    case 'tresci':
+        $c = load_data('content');
+        $c['hero_lead'] = post_str('hero_lead', 300);
+        foreach (['reasons' => [80, 300], 'steps' => [60, 300]] as $key => [$tMax, $dMax]) {
+            $rows = [];
+            foreach ((array) ($_POST[$key] ?? []) as $r) {
+                $t = trim(mb_substr((string) ($r[0] ?? ''), 0, $tMax));
+                $d = trim(mb_substr(str_replace("\r\n", "\n", (string) ($r[1] ?? '')), 0, $dMax));
+                if ($t !== '') { $rows[] = [$t, $d]; }
+            }
+            $c[$key] = array_slice($rows, 0, 12);
+        }
+        save_data('content', $c) ? flash('Treści zapisane.') : flash('Nie udało się zapisać.', 'error');
+        redirect('?p=tresci');
+
+    case 'faq':
+        $rows = [];
+        foreach ((array) ($_POST['faq'] ?? []) as $r) {
+            $q = trim(mb_substr((string) ($r['q'] ?? ''), 0, 160));
+            $a = trim(mb_substr(str_replace("\r\n", "\n", (string) ($r['a'] ?? '')), 0, 800));
+            $w = in_array($r['where'] ?? '', ['home', 'kurs', 'doszkalajace', 'noclegi', 'all'], true) ? $r['where'] : 'home';
+            if ($q !== '' && $a !== '') { $rows[] = ['q' => $q, 'a' => $a, 'where' => $w]; }
+        }
+        save_data('faq', array_slice($rows, 0, 40)) ? flash('Pytania zapisane.') : flash('Nie udało się zapisać.', 'error');
+        redirect('?p=faq');
+
+    case 'opinie':
+        $rows = [];
+        foreach ((array) ($_POST['rev'] ?? []) as $r) {
+            $text = trim(mb_substr(str_replace("\r\n", "\n", (string) ($r['text'] ?? '')), 0, 800));
+            if ($text === '') { continue; }
+            $date = (string) ($r['date'] ?? '');
+            $rows[] = [
+                'name' => trim(mb_substr((string) ($r['name'] ?? ''), 0, 60)),
+                'stars' => max(0, min(5, (int) ($r['stars'] ?? 5))),
+                'source' => trim(mb_substr((string) ($r['source'] ?? ''), 0, 40)),
+                'date' => preg_match('~^\d{4}-\d{2}-\d{2}$~', $date) ? $date : '',
+                'visible' => !empty($r['visible']),
+                'text' => $text,
+            ];
+        }
+        save_data('reviews', array_slice($rows, 0, 60)) ? flash('Opinie zapisane.') : flash('Nie udało się zapisać.', 'error');
+        redirect('?p=opinie');
+
     case 'wiadomosci':
         $msgs = load_data('messages');
         $id = (string) ($_POST['id'] ?? '');
@@ -212,13 +281,18 @@ switch ($page) {
 
     case 'firma':
         $s = settings();
-        foreach (['name' => 80, 'tagline' => 80, 'owner' => 80, 'phone' => 30, 'email' => 120, 'form_email' => 120, 'street' => 120, 'postal_code' => 10, 'city' => 60, 'hours' => 400, 'hours_schema' => 120, 'legal_name' => 200, 'nip' => 20, 'regon' => 20, 'osk_number' => 40, 'lat' => 20, 'lng' => 20] as $k => $max) {
+        foreach (['name' => 80, 'tagline' => 80, 'owner' => 80, 'phone' => 30, 'email' => 120, 'form_email' => 120, 'street' => 120, 'postal_code' => 10, 'city' => 60, 'hours' => 400, 'hours_schema' => 120, 'notice_text' => 160, 'gsc_verification' => 120, 'bing_verification' => 120, 'legal_name' => 200, 'nip' => 20, 'regon' => 20, 'osk_number' => 40, 'lat' => 20, 'lng' => 20] as $k => $max) {
             $s[$k] = post_str($k, $max);
         }
         foreach (['facebook', 'google_maps'] as $k) {
             $v = post_str($k, 300);
             $s[$k] = preg_match('~^https://~i', $v) ? $v : '';
         }
+        $s['notice_start'] = post_date('notice_start');
+        $s['notice_end'] = post_date('notice_end');
+        $s['notice_link'] = post_url('notice_link');
+        $s['gsc_verification'] = preg_replace('~[^A-Za-z0-9_-]~', '', $s['gsc_verification']);
+        $s['bing_verification'] = preg_replace('~[^A-Za-z0-9]~', '', $s['bing_verification']);
         $s['home_variant'] = in_array($_POST['home_variant'] ?? '', ['a', 'b', 'c'], true) ? $_POST['home_variant'] : 'a';
         $url = post_str('site_url', 200);
         if (preg_match('~^https?://[a-z0-9.-]+~i', $url)) {
