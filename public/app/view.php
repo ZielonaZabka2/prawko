@@ -125,12 +125,33 @@ function faq_items(string $set = 'home', ?array $course = null): array
     return $list;
 }
 
-function faq_html(array $items, string $heading = 'Najczęstsze pytania'): string
+function faq_html(array $items, string $heading = 'Najczęstsze pytania', string $aside = ''): string
 {
-    $out = '<section class="section faq" id="faq" aria-labelledby="faq-h"><div class="wrap narrow">';
-    $out .= '<h2 id="faq-h">' . e($heading) . '</h2><div class="faq-list">';
+    $list = '<div class="faq-list">';
     foreach ($items as $i => [$q, $a]) {
-        $out .= '<details' . ($i === 0 ? ' open' : '') . '><summary><h3>' . e($q) . '</h3>' . icon('chevron', 'icon faq-ico') . '</summary><p>' . e($a) . '</p></details>';
+        $list .= '<details' . ($i === 0 ? ' open' : '') . '><summary><h3>' . e($q) . '</h3>' . icon('chevron', 'icon faq-ico') . '</summary><p>' . e($a) . '</p></details>';
     }
-    return $out . '</div></div></section>';
+    $list .= '</div>';
+    if ($aside !== '') {
+        return '<section class="section faq faq-has-aside" id="faq" aria-labelledby="faq-h"><div class="wrap faq-grid"><div><h2 id="faq-h">' . e($heading) . '</h2>' . $list . '</div>' . $aside . '</div></section>';
+    }
+    return '<section class="section faq" id="faq" aria-labelledby="faq-h"><div class="wrap narrow"><h2 id="faq-h">' . e($heading) . '</h2>' . $list . '</div></section>';
+}
+
+/** Karta obok FAQ: zdjęcie biura, telefon, godziny, „Napisz do nas”. */
+function faq_aside(): string
+{
+    $s = settings();
+    ob_start(); ?>
+<aside class="faq-aside" data-reveal>
+  <figure><?= img('biuro-szyld', 'Biuro Szkoły Bezpiecznej Jazdy przy ul. Dworna 1 w Łomży', '(min-width: 1000px) 380px, 100vw', ['default_w' => 480]) ?></figure>
+  <div class="faq-aside-in">
+    <p class="faq-aside-h">Nie ma tu Twojego pytania?</p>
+    <p>Zadzwoń albo napisz – odpowiemy tego samego dnia<?= $s['hours'] ? ' (' . e(str_replace("\n", ', ', $s['hours'])) . ')' : '' ?>.</p>
+    <a class="btn btn-primary btn-block" href="<?= e(phone_href()) ?>"><?= icon('phone') ?> <?= e($s['phone']) ?></a>
+    <a class="btn btn-outline btn-block" href="/kontakt#zapis"><?= icon('mail') ?> Napisz do nas</a>
+    <p class="faq-aside-addr"><?= icon('pin', 'icon icon-sm') ?> <?= e(full_address()) ?></p>
+  </div>
+</aside>
+<?php return (string) ob_get_clean();
 }

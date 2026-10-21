@@ -17,6 +17,7 @@
       <a href="tel:<?= e(preg_replace('~[^\d+]~', '', $m['phone'])) ?>" class="msg-phone"><?= icon('phone', 'icon icon-sm') ?> <?= e($m['phone']) ?></a>
       <?php if ($m['email']): ?><a href="mailto:<?= e($m['email']) ?>"><?= e($m['email']) ?></a><?php endif; ?>
       <span class="muted"><?= e($m['topic']) ?> · <?= e(date('d.m.Y H:i', strtotime($m['date']))) ?></span>
+      <?php if (isset($m['mailed']) && !$m['mailed']): ?><span class="status status-off" title="<?= e($m['mail_error'] ?? '') ?>">e-mail nie wyszedł – sprawdź ustawienia poczty</span><?php endif; ?>
     </header>
     <?php if ($m['message']): ?><p><?= nl2br(e($m['message'])) ?></p><?php endif; ?>
     <div class="msg-actions">

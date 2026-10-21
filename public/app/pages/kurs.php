@@ -73,4 +73,6 @@ $includes = course_includes($c);
   </div>
 </section>
 
-<?= faq_html($faq, 'Pytania o kurs ' . $cat) ?>
+<?= faq_html($faq, 'Pytania o kurs ' . $cat, faq_aside()) ?>
+
+<?php partial('home/contact'); ?>

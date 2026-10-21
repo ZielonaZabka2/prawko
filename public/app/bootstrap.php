@@ -15,6 +15,7 @@ define('DATA', ROOT . '/data');
 define('UPLOADS', ROOT . '/uploads');
 
 require APP . '/lib/markdown.php';
+require APP . '/lib/mailer.php';
 
 /* ---------- dane ---------- */
 
@@ -447,12 +448,15 @@ function handle_contact_form(): array
     if (mb_strlen($v['name']) < 2) {
         $errors['name'] = 'Podaj imię.';
     }
-    $digits = preg_replace('~\D~', '', $v['phone']);
-    if (strlen((string) $digits) < 9) {
-        $errors['phone'] = 'Podaj numer telefonu (9 cyfr), żebyśmy mogli oddzwonić.';
-    }
+    $digits = (string) preg_replace('~\D~', '', $v['phone']);
     if ($v['email'] !== '' && !filter_var($v['email'], FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = 'Ten adres e-mail wygląda na niepoprawny.';
+    }
+    if ($v['phone'] !== '' && strlen($digits) < 9) {
+        $errors['phone'] = 'Numer telefonu powinien mieć 9 cyfr.';
+    }
+    if ($v['phone'] === '' && $v['email'] === '') {
+        $errors['phone'] = 'Podaj telefon albo e-mail, żebyśmy mogli odpowiedzieć.';
     }
     if (mb_strlen($v['message']) > 3000) {
         $errors['message'] = 'Wiadomość jest za długa (max 3000 znaków).';
@@ -485,49 +489,62 @@ function handle_contact_form(): array
         'read' => false,
         'ip' => $ipHash,
     ];
+    [$mailed, $mailError] = send_contact_mail($entry);
+    $entry['mailed'] = $mailed;
+    if (!$mailed) {
+        $entry['mail_error'] = $mailError;
+    }
     array_unshift($messages, $entry);
     save_data('messages', array_slice($messages, 0, 1000));
-
-    send_contact_mail($entry);
+    if ($entry['email'] && !empty(settings()['autoreply'])) {
+        send_autoreply($entry);
+    }
     return [true, [], []];
 }
 
 function contact_topics(): array
 {
     return [
-        'kurs' => 'Kurs prawa jazdy kat. B',
+        'kurs' => 'Kurs prawa jazdy',
         'doszkalajace' => 'Jazdy doszkalające',
         'nocleg' => 'Nocleg / mieszkanie',
         'inne' => 'Inne pytanie',
     ];
 }
 
-function send_contact_mail(array $m): void
+function contact_inbox(): string
 {
     $s = settings();
-    $to = $s['form_email'] ?: $s['email'];
-    if (!$to || !function_exists('mail')) {
-        return;
-    }
-    $host = parse_url((string) $s['site_url'], PHP_URL_HOST) ?: 'localhost';
-    $subject = '=?UTF-8?B?' . base64_encode('Nowe zgłoszenie ze strony: ' . $m['topic'] . ' – ' . $m['name']) . '?=';
+    return $s['form_email'] ?: $s['email'];
+}
+
+/** Powiadomienie do biura o nowym zgłoszeniu. Zwraca [ok, błąd]. */
+function send_contact_mail(array $m): array
+{
+    $subject = 'Nowe zgłoszenie ze strony: ' . $m['topic'] . ' – ' . $m['name'];
     $body = "Nowe zgłoszenie z formularza na stronie\n\n"
         . "Temat: {$m['topic']}\n"
         . "Imię: {$m['name']}\n"
-        . "Telefon: {$m['phone']}\n"
-        . "E-mail: " . ($m['email'] ?: '–') . "\n"
+        . 'Telefon: ' . ($m['phone'] ?: '–') . "\n"
+        . 'E-mail: ' . ($m['email'] ?: '–') . "\n"
         . "Data: {$m['date']}\n\n"
         . "Wiadomość:\n" . ($m['message'] ?: '–') . "\n\n"
-        . "Wszystkie zgłoszenia: " . site_url('admin/?p=wiadomosci') . "\n";
-    $headers = [
-        'From: Strona OSK <no-reply@' . $host . '>',
-        'Content-Type: text/plain; charset=UTF-8',
-        'Content-Transfer-Encoding: 8bit',
-    ];
-    if ($m['email'] && filter_var($m['email'], FILTER_VALIDATE_EMAIL)) {
-        $headers[] = 'Reply-To: ' . $m['email'];
-    }
-    @mail($to, $subject, $body, implode("\r\n", $headers));
+        . ($m['email'] ? "Możesz po prostu odpowiedzieć na tego maila – trafi do klienta.\n" : '')
+        . 'Wszystkie zgłoszenia: ' . site_url('admin/?p=wiadomosci') . "\n";
+    return send_mail(contact_inbox(), $subject, $body, $m['email'] ?: null);
+}
+
+/** Automatyczne potwierdzenie dla osoby, która wysłała formularz. */
+function send_autoreply(array $m): void
+{
+    $s = settings();
+    $text = trim((string) ($s['autoreply_text'] ?? ''));
+    $body = 'Dzień dobry' . ($m['name'] ? ' ' . $m['name'] : '') . ",\n\n"
+        . ($text ?: 'dziękujemy za wiadomość. Odpowiemy najszybciej, jak to możliwe – zwykle tego samego dnia.') . "\n\n"
+        . "Twoja wiadomość:\n" . ($m['message'] ?: '(bez treści)') . "\n\n"
+        . "Pozdrawiamy\n{$s['name']} – {$s['tagline']}\n"
+        . "tel. {$s['phone']}\n" . full_address() . "\n" . site_url() . "\n";
+    send_mail($m['email'], 'Dziękujemy za wiadomość – ' . $s['name'], $body, contact_inbox());
 }
 
 /* ---------- panel administracyjny ---------- */

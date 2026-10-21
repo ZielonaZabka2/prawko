@@ -70,4 +70,6 @@ $meta = [
   </div>
 </section>
 
-<?= faq_html($faq, 'Pytania o jazdy doszkalające') ?>
+<?= faq_html($faq, 'Pytania o jazdy doszkalające', faq_aside()) ?>
+
+<?php partial('home/contact'); ?>

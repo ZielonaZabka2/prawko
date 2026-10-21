@@ -21,6 +21,38 @@
       <?= field('hours_schema', 'Godziny dla Google', $s['hours_schema'], ['help' => 'Format: <code>Mo-Fr 08:00-18:00, Sa 09:00-13:00</code> (Mo Tu We Th Fr Sa Su).']) ?>
     </div>
   </fieldset>
+  <fieldset id="poczta">
+    <legend>Poczta i formularz kontaktowy</legend>
+    <p class="help">Zalecane: załóż w panelu LH.pl skrzynkę <strong>biuro@<?= e(preg_replace('~^www\.~', '', (string) parse_url($s['site_url'], PHP_URL_HOST))) ?></strong> i wpisz jej dane poniżej. Wiadomości z formularza będą wtedy wysyłane z adresu w domenie strony – nie trafią do spamu. Instrukcja: <code>docs/WDROZENIE.md</code>.</p>
+    <div class="grid-2">
+      <?= field('form_email', 'Gdzie wysyłać wiadomości z formularza', $s['form_email'], ['type' => 'email', 'help' => 'Np. biuro@… albo prywatny Gmail. Puste = e-mail widoczny na stronie.']) ?>
+      <?= field('mail_from', 'Adres nadawcy (skrzynka w domenie)', $s['mail_from'] ?? '', ['type' => 'email', 'placeholder' => 'biuro@' . preg_replace('~^www\.~', '', (string) parse_url($s['site_url'], PHP_URL_HOST))]) ?>
+    </div>
+    <div class="field">
+      <span class="label">Sposób wysyłki</span>
+      <div class="seg">
+        <label><input type="radio" name="mail_mode" value="smtp"<?= ($s['mail_mode'] ?? 'php') === 'smtp' ? ' checked' : '' ?>> Przez skrzynkę (SMTP) – zalecane</label>
+        <label><input type="radio" name="mail_mode" value="php"<?= ($s['mail_mode'] ?? 'php') !== 'smtp' ? ' checked' : '' ?>> Funkcja serwera (mail)</label>
+      </div>
+    </div>
+    <div class="grid-3">
+      <?= field('smtp_host', 'Serwer poczty (SMTP)', $s['smtp_host'] ?? '', ['placeholder' => 'np. serwer123456.lh.pl', 'help' => 'Panel LH.pl → Poczta → skrzynka → „Konfiguracja programu pocztowego”.']) ?>
+      <?= field('smtp_port', 'Port', $s['smtp_port'] ?? 465, ['type' => 'number', 'min' => 1, 'max' => 65535, 'help' => '465 (SSL) albo 587 (TLS).']) ?>
+      <div class="field">
+        <label for="f-smtp_secure">Szyfrowanie</label>
+        <select id="f-smtp_secure" name="smtp_secure">
+          <?php foreach (['ssl' => 'SSL (port 465)', 'tls' => 'TLS / STARTTLS (port 587)', 'none' => 'brak (niezalecane)'] as $k => $l): ?><option value="<?= $k ?>"<?= ($s['smtp_secure'] ?? 'ssl') === $k ? ' selected' : '' ?>><?= $l ?></option><?php endforeach; ?>
+        </select>
+      </div>
+    </div>
+    <div class="grid-2">
+      <?= field('smtp_user', 'Login skrzynki', $s['smtp_user'] ?? '', ['placeholder' => 'pełny adres, np. biuro@…', 'autocomplete' => 'off']) ?>
+      <?= field('smtp_pass', 'Hasło skrzynki', '', ['type' => 'password', 'autocomplete' => 'new-password', 'placeholder' => !empty($s['smtp_pass']) ? '•••••••• (zapisane – zostaw puste, żeby nie zmieniać)' : '', 'help' => 'Hasło jest zapisane na serwerze w katalogu zablokowanym dla przeglądarki.']) ?>
+    </div>
+    <?= field('mail_from_name', 'Nazwa nadawcy', $s['mail_from_name'] ?? '', ['placeholder' => $s['name']]) ?>
+    <?= field('autoreply', 'Wysyłaj automatyczne potwierdzenie do osoby, która napisała (jeśli podała e-mail)', $s['autoreply'] ?? true, ['type' => 'checkbox']) ?>
+    <?= field('autoreply_text', 'Treść potwierdzenia', $s['autoreply_text'] ?? '', ['type' => 'textarea', 'rows' => 3, 'maxlength' => 600, 'help' => 'Zaczyna się od „Dzień dobry [imię],”, a kończy podpisem i danymi kontaktowymi.']) ?>
+  </fieldset>
   <fieldset>
     <legend>Wygląd strony głównej</legend>
     <div class="variants">
@@ -72,4 +104,11 @@
     </div>
   </fieldset>
   <div class="form-actions"><button class="btn btn-primary" type="submit">Zapisz dane</button></div>
+</form>
+
+<form method="post" action="?p=mailtest" class="panel narrow-panel">
+  <?= csrf_field() ?>
+  <h2 style="margin-top:0">Test poczty</h2>
+  <p class="muted">Najpierw zapisz ustawienia powyżej, potem wyślij test. Wiadomość przyjdzie na adres: <strong><?= e(contact_inbox()) ?></strong>.</p>
+  <button class="btn btn-primary" type="submit">Wyślij testowy e-mail</button>
 </form>

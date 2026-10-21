@@ -120,4 +120,6 @@ $meta = [
   </div>
 </section>
 
-<?= faq_html($faq, 'Pytania o nocleg') ?>
+<?= faq_html($faq, 'Pytania o nocleg', faq_aside()) ?>
+
+<?php partial('home/contact'); ?>

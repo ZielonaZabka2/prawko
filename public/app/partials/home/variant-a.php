@@ -100,5 +100,5 @@ $reasons = require __DIR__ . '/reasons-data.php';
 
 <?php partial('home/stay'); ?>
 <?php partial('home/reviews'); ?>
-<?= faq_html($faq, 'Pytania, które słyszymy najczęściej') ?>
+<?= faq_html($faq, 'Pytania, które słyszymy najczęściej', faq_aside()) ?>
 <?php partial('home/contact'); ?>

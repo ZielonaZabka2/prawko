@@ -27,7 +27,7 @@ $company = $s['legal_name'] ?: $s['owner'] . ', prowadzący działalność pod n
       <table>
         <thead><tr><th scope="col">Cel</th><th scope="col">Dane</th><th scope="col">Podstawa prawna</th><th scope="col">Jak długo</th></tr></thead>
         <tbody>
-          <tr><td>Odpowiedź na zgłoszenie z formularza lub telefon</td><td>imię, telefon, e-mail, treść wiadomości</td><td>art. 6 ust. 1 lit. b i f RODO (działania przed zawarciem umowy, uzasadniony interes)</td><td>do 12 miesięcy od ostatniego kontaktu</td></tr>
+          <tr><td>Odpowiedź na zgłoszenie z formularza lub telefon (w tym automatyczne potwierdzenie e-mailem)</td><td>imię, telefon, e-mail, treść wiadomości</td><td>art. 6 ust. 1 lit. b i f RODO (działania przed zawarciem umowy, uzasadniony interes)</td><td>do 12 miesięcy od ostatniego kontaktu</td></tr>
           <tr><td>Zawarcie i wykonanie umowy szkoleniowej lub najmu</td><td>dane z umowy, numer PKK, dane kontaktowe</td><td>art. 6 ust. 1 lit. b RODO</td><td>przez czas trwania umowy</td></tr>
           <tr><td>Obowiązki prawne ośrodka szkolenia kierowców i księgowe</td><td>dane wymagane przepisami (m.in. ustawy o kierujących pojazdami)</td><td>art. 6 ust. 1 lit. c RODO</td><td>przez okres wymagany przepisami</td></tr>
           <tr><td>Dochodzenie lub obrona roszczeń</td><td>dane związane z umową</td><td>art. 6 ust. 1 lit. f RODO</td><td>do upływu terminu przedawnienia</td></tr>
@@ -37,7 +37,7 @@ $company = $s['legal_name'] ?: $s['owner'] . ', prowadzący działalność pod n
     <p>Podanie danych jest dobrowolne, ale bez numeru telefonu nie oddzwonimy, a bez danych wymaganych przepisami nie możemy przeprowadzić szkolenia.</p>
 
     <h2>3. Komu przekazujemy dane</h2>
-    <p>Dane mogą trafić do podmiotów, które pomagają nam prowadzić działalność: dostawcy hostingu strony (LH.pl), dostawcy poczty e-mail, biura rachunkowego. Dane kursantów przekazujemy też organom publicznym, gdy wymagają tego przepisy (np. w systemie obsługi profilu kandydata na kierowcę). Nie sprzedajemy danych i nie przekazujemy ich w celach marketingowych.</p>
+    <p>Dane mogą trafić do podmiotów, które pomagają nam prowadzić działalność: dostawcy hostingu strony i poczty (LH.pl), dostawcy prywatnej skrzynki e-mail (Google), biura rachunkowego. Dane kursantów przekazujemy też organom publicznym, gdy wymagają tego przepisy (np. w systemie obsługi profilu kandydata na kierowcę). Nie sprzedajemy danych i nie przekazujemy ich w celach marketingowych.</p>
     <p>Poczta e-mail obsługiwana jest przez Google. W związku z tym dane mogą być przetwarzane również poza Europejskim Obszarem Gospodarczym, na podstawie mechanizmów przewidzianych w RODO (np. standardowych klauzul umownych).</p>
 
     <h2>4. Twoje prawa</h2>

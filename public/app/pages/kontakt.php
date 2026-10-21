@@ -26,7 +26,7 @@ $meta = [
   <div class="wrap">
     <?= breadcrumbs_html($crumbs) ?>
     <h1>Kontakt i zapisy</h1>
-    <p class="lead narrow-text">Najszybciej będzie telefonicznie. Jeśli nie możesz rozmawiać, zostaw numer w formularzu – oddzwonimy.</p>
+    <p class="lead narrow-text">Zadzwoń albo napisz przez formularz – odpowiemy telefonicznie lub mailem, jak wolisz.</p>
   </div>
 </section>
 
@@ -57,7 +57,7 @@ $meta = [
       </figure>
     </div>
     <div>
-      <h2 class="form-title">Zapisz się albo zadaj pytanie</h2>
+      <h2 class="form-title">Napisz do nas</h2>
       <?php partial('contact-form', ['compact' => false]); ?>
     </div>
   </div>
@@ -67,7 +67,7 @@ $meta = [
   <div class="wrap">
     <h2 id="mapa-h">Jak dojechać</h2>
     <div class="map" data-map-src="https://www.google.com/maps?q=<?= $mapQuery ?>&amp;output=embed">
-      <div class="map-placeholder">
+      <div class="map-placeholder" style="--map-bg: url('<?= e('/assets/img/' . (image_variants('biuro-szyld')[0]['file'] ?? '')) ?>')">
         <?= icon('pin', 'icon icon-xl') ?>
         <p><strong><?= e(full_address()) ?></strong></p>
         <p class="map-note">Mapa Google ładuje się dopiero po kliknięciu (Google może wtedy zapisać pliki cookie).</p>

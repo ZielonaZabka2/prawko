@@ -14,7 +14,7 @@ $describedBy = fn(string $k) => isset($err[$k]) ? ' aria-invalid="true" aria-des
   <div class="form-card form-success" role="status" id="zapis">
     <?= icon('check', 'icon icon-xl') ?>
     <h3>Dziękujemy, zgłoszenie dotarło</h3>
-    <p>Oddzwonimy najszybciej, jak to możliwe – zwykle tego samego dnia. Jeśli sprawa jest pilna, zadzwoń: <a href="<?= e(phone_href()) ?>"><?= e(settings()['phone']) ?></a>.</p>
+    <p>Odpowiemy najszybciej, jak to możliwe – zwykle tego samego dnia. Na podany e-mail wysłaliśmy potwierdzenie. Pilna sprawa? Zadzwoń: <a href="<?= e(phone_href()) ?>"><?= e(settings()['phone']) ?></a>.</p>
   </div>
 <?php else: ?>
   <form class="form-card" method="post" action="/kontakt#zapis" <?= $compact ? '' : 'id="zapis"' ?> novalidate>
@@ -23,25 +23,24 @@ $describedBy = fn(string $k) => isset($err[$k]) ? ' aria-invalid="true" aria-des
     <div class="hp" aria-hidden="true"><label>Strona www <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
     <?php if (isset($err['form'])): ?><p class="form-alert" role="alert"><?= e($err['form']) ?></p><?php endif; ?>
 
+    <div class="field">
+      <label for="<?= $fid ?>-name">Imię</label>
+      <input id="<?= $fid ?>-name" name="name" type="text" autocomplete="given-name" required maxlength="100" value="<?= e($old['name']) ?>"<?= $describedBy('name') ?>>
+      <?= $fieldErr('name') ?>
+    </div>
     <div class="field-row">
       <div class="field">
-        <label for="<?= $fid ?>-name">Imię</label>
-        <input id="<?= $fid ?>-name" name="name" type="text" autocomplete="given-name" required maxlength="100" value="<?= e($old['name']) ?>"<?= $describedBy('name') ?>>
-        <?= $fieldErr('name') ?>
-      </div>
-      <div class="field">
         <label for="<?= $fid ?>-phone">Telefon</label>
-        <input id="<?= $fid ?>-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="30" value="<?= e($old['phone']) ?>"<?= $describedBy('phone') ?>>
+        <input id="<?= $fid ?>-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="30" value="<?= e($old['phone']) ?>"<?= $describedBy('phone') ?>>
         <?= $fieldErr('phone') ?>
       </div>
+      <div class="field">
+        <label for="<?= $fid ?>-email">E-mail</label>
+        <input id="<?= $fid ?>-email" name="email" type="email" autocomplete="email" maxlength="150" value="<?= e($old['email']) ?>"<?= $describedBy('email') ?>>
+        <?= $fieldErr('email') ?>
+      </div>
     </div>
-    <?php if (!$compact): ?>
-    <div class="field">
-      <label for="<?= $fid ?>-email">E-mail <span class="opt">(opcjonalnie)</span></label>
-      <input id="<?= $fid ?>-email" name="email" type="email" autocomplete="email" maxlength="150" value="<?= e($old['email']) ?>"<?= $describedBy('email') ?>>
-      <?= $fieldErr('email') ?>
-    </div>
-    <?php endif; ?>
+    <p class="form-hint">Wystarczy telefon <strong>albo</strong> e-mail – odpowiemy tak, jak wolisz.</p>
     <div class="field">
       <label for="<?= $fid ?>-topic">W jakiej sprawie?</label>
       <select id="<?= $fid ?>-topic" name="topic">
@@ -51,8 +50,8 @@ $describedBy = fn(string $k) => isset($err[$k]) ? ' aria-invalid="true" aria-des
       </select>
     </div>
     <div class="field">
-      <label for="<?= $fid ?>-message">Wiadomość <span class="opt">(opcjonalnie)</span></label>
-      <textarea id="<?= $fid ?>-message" name="message" rows="<?= $compact ? 3 : 5 ?>" maxlength="3000" placeholder="Np. kiedy chcesz zacząć, czy masz już PKK"<?= $describedBy('message') ?>><?= e($old['message']) ?></textarea>
+      <label for="<?= $fid ?>-message">Wiadomość</label>
+      <textarea id="<?= $fid ?>-message" name="message" rows="<?= $compact ? 3 : 5 ?>" maxlength="3000" placeholder="Napisz, o co chcesz zapytać – np. kiedy chcesz zacząć, czy masz już PKK"<?= $describedBy('message') ?>><?= e($old['message']) ?></textarea>
       <?= $fieldErr('message') ?>
     </div>
     <div class="field field-check">
@@ -60,6 +59,6 @@ $describedBy = fn(string $k) => isset($err[$k]) ? ' aria-invalid="true" aria-des
       <label for="<?= $fid ?>-consent">Wyrażam zgodę na kontakt w sprawie zgłoszenia. Zasady przetwarzania danych: <a href="/polityka-prywatnosci">polityka prywatności</a>.</label>
       <?= $fieldErr('consent') ?>
     </div>
-    <button class="btn btn-primary btn-block" type="submit">Wyślij zgłoszenie <?= icon('arrow') ?></button>
+    <button class="btn btn-primary btn-block" type="submit">Wyślij wiadomość <?= icon('arrow') ?></button>
   </form>
 <?php endif; ?>

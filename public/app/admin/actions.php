@@ -264,6 +264,11 @@ switch ($page) {
         save_data('reviews', array_slice($rows, 0, 60)) ? flash('Opinie zapisane.') : flash('Nie udało się zapisać.', 'error');
         redirect('?p=opinie');
 
+    case 'mailtest':
+        [$ok, $err] = send_mail(contact_inbox(), 'Test poczty ze strony ' . settings()['name'], "To jest testowa wiadomość z panelu strony.\n\nJeśli ją widzisz, formularz kontaktowy działa i wiadomości od kursantów będą przychodzić na ten adres.\n\n" . site_url() . "\n");
+        $ok ? flash('Wysłano testowy e-mail na ' . contact_inbox() . '. Sprawdź skrzynkę (także folder Spam).') : flash('Nie udało się wysłać: ' . $err, 'error');
+        redirect('?p=firma#poczta');
+
     case 'wiadomosci':
         $msgs = load_data('messages');
         $id = (string) ($_POST['id'] ?? '');
@@ -284,12 +289,24 @@ switch ($page) {
 
     case 'firma':
         $s = settings();
-        foreach (['name' => 80, 'tagline' => 80, 'owner' => 80, 'phone' => 30, 'email' => 120, 'form_email' => 120, 'street' => 120, 'postal_code' => 10, 'city' => 60, 'hours' => 400, 'hours_schema' => 120, 'notice_text' => 160, 'gsc_verification' => 120, 'bing_verification' => 120, 'legal_name' => 200, 'nip' => 20, 'regon' => 20, 'osk_number' => 40, 'lat' => 20, 'lng' => 20] as $k => $max) {
+        foreach (['name' => 80, 'tagline' => 80, 'owner' => 80, 'phone' => 30, 'email' => 120, 'form_email' => 120, 'street' => 120, 'postal_code' => 10, 'city' => 60, 'hours' => 400, 'hours_schema' => 120, 'notice_text' => 160, 'mail_from' => 120, 'mail_from_name' => 80, 'smtp_host' => 120, 'smtp_user' => 120, 'autoreply_text' => 600, 'gsc_verification' => 120, 'bing_verification' => 120, 'legal_name' => 200, 'nip' => 20, 'regon' => 20, 'osk_number' => 40, 'lat' => 20, 'lng' => 20] as $k => $max) {
             $s[$k] = post_str($k, $max);
         }
         foreach (['facebook', 'google_maps'] as $k) {
             $v = post_str($k, 300);
             $s[$k] = preg_match('~^https://~i', $v) ? $v : '';
+        }
+        $s['mail_mode'] = ($_POST['mail_mode'] ?? '') === 'smtp' ? 'smtp' : 'php';
+        $s['smtp_port'] = post_int('smtp_port', 1, 65535);
+        $s['smtp_secure'] = in_array($_POST['smtp_secure'] ?? '', ['ssl', 'tls', 'none'], true) ? $_POST['smtp_secure'] : 'ssl';
+        $s['autoreply'] = post_bool('autoreply');
+        $s['smtp_host'] = preg_replace('~[^a-z0-9.-]~i', '', $s['smtp_host']);
+        if ((string) ($_POST['smtp_pass'] ?? '') !== '') {
+            $s['smtp_pass'] = (string) $_POST['smtp_pass'];
+        }
+        if ($s['mail_from'] !== '' && !filter_var($s['mail_from'], FILTER_VALIDATE_EMAIL)) {
+            flash('Adres nadawcy jest niepoprawny – nie zapisano.', 'error');
+            redirect('?p=firma');
         }
         $s['notice_start'] = post_date('notice_start');
         $s['notice_end'] = post_date('notice_end');
